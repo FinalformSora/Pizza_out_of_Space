@@ -1,8 +1,11 @@
 fileFormatVersion: 2
-guid: 3abbd440ec1bb7b4e9eb8b418ff17c35
+guid: f2b23bb7386cf4f4da473b63556a2e12
 ModelImporter:
   serializedVersion: 19301
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: -135952331956449747
+    second: Main
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -45,7 +48,7 @@ ModelImporter:
     importLights: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
