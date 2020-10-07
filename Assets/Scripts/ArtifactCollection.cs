@@ -11,7 +11,7 @@ public class ArtifactCollection : MonoBehaviour
     public Text artifactCountText;
     public Text artifactCollectText;
 
-    public bool interactTextState = false;
+    private bool interactTextState = false;
 
     private int artifactCount;
 

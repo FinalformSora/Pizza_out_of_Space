@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     // Movespeed
     public float speed = 12f;
 
+    public float runspeed = 24f;
+
     void Update()
     {
         float x = Input.GetAxis("Horizontal");
@@ -32,7 +34,15 @@ public class PlayerMovement : MonoBehaviour
 
         vSpeed -= gravity * Time.fixedDeltaTime;
 
-        Vector3 movement = transform.right * x * speed * Time.deltaTime + transform.forward * z * speed * Time.deltaTime;
+        Vector3 movement;
+
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            movement = transform.right * x * runspeed * Time.deltaTime + transform.forward * z * runspeed * Time.deltaTime;
+        } else
+        {
+            movement = transform.right * x * speed * Time.deltaTime + transform.forward * z * speed * Time.deltaTime;
+        }
+
         movement.y = vSpeed * Time.fixedDeltaTime;
 
         controller.Move(movement);
