@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     private CharacterController player;
     private GameObject eyes;
+    private Light light;
+    private Boolean lighton = false;
 
     private float moveSpeed = 6f;
     private float mouseSensitivity = 100f;
@@ -26,6 +29,8 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         player = GetComponent<CharacterController>();
         eyes = GameObject.FindWithTag("MainCamera");
+        light = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
+        light.enabled = lighton;
     }
 
     // Update is called once per frame
@@ -61,5 +66,18 @@ public class PlayerController : MonoBehaviour
         player.Move(move * moveSpeed * Time.deltaTime);
         player.Move(velocity * Time.deltaTime);
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            lighton = !lighton;
+        }
+        light.enabled = lighton;
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveSpeed = 12f;
+        }
+        else
+        {
+            moveSpeed = 6f;
+        }
     }
 }

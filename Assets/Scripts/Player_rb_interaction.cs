@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player_rb_interaction : MonoBehaviour
 {
 
-    public float pushForce = 2.0f;
+    public float pushForce = 30.0f;
 
     public CharacterController cc;
 
