@@ -63,8 +63,7 @@ public class PlayerController : MonoBehaviour
 
         transform.Rotate(Vector3.up * mouseX);
         eyes.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        player.Move(move * moveSpeed * Time.deltaTime);
-        player.Move(velocity * Time.deltaTime);
+        player.Move(new Vector3(move.x * moveSpeed, velocity.y, move.z * moveSpeed) * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.F))
         {

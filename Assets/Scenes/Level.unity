@@ -18233,7 +18233,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 892325767}
   serializedVersion: 2
-  m_Mass: 0.95
+  m_Mass: 8
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -37031,7 +37031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e04bce92f47b8674a82d37a4be4854a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 590.31
+  pushForce: 10
   cc: {fileID: 1731278268}
 --- !u!114 &1731278271
 MonoBehaviour:
@@ -37063,8 +37063,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1731278268}
   feet: {fileID: 1731278273}
-  clips_walking: []
-  clips_running: []
+  clips_walking:
+  - {fileID: 8300000, guid: 57a0d38f36c5ace4fb4422af6a2d85ae, type: 3}
+  - {fileID: 8300000, guid: 04792aabdb80d0648b82abea351ded0c, type: 3}
+  clips_running:
+  - {fileID: 8300000, guid: 18cea78a5dd9b2549a6cdb46031ecfbd, type: 3}
+  - {fileID: 8300000, guid: 971c2fc395425e648a5a2257a701a5d2, type: 3}
 --- !u!82 &1731278273
 AudioSource:
   m_ObjectHideFlags: 0
@@ -45380,7 +45384,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134522017}
   serializedVersion: 2
-  m_Mass: 1.15
+  m_Mass: 8
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
