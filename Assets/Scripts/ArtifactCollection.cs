@@ -10,6 +10,7 @@ public class ArtifactCollection : MonoBehaviour
     public float rcDistance = 4f;
     public Text artifactCountText;
     public Text artifactCollectText;
+    public LayerMask layerMask;
 
     private bool interactTextState = false;
 
@@ -26,11 +27,9 @@ public class ArtifactCollection : MonoBehaviour
     void Update()
     {
         // Bit shift the index of the layer (8) to get a bit mask
-        int layerMask = 1 << 8;
 
         // This would cast rays only against colliders in layer 8.
         // But instead we want to collide against everything except layer 8. The ~ operator does this, it inverts a bitmask.
-        layerMask = ~layerMask;
 
         RaycastHit hit;
         // Does the ray intersect any objects excluding the player layer
@@ -38,7 +37,7 @@ public class ArtifactCollection : MonoBehaviour
         {
             // Debug.DrawRay(playerCam.position, playerCam.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
 
-            if (hit.collider.gameObject.name.Contains("Collectible"))
+            if (hit.collider.GetComponent<Artifact>())
             {
                 interactTextState = true;
 
@@ -53,6 +52,5 @@ public class ArtifactCollection : MonoBehaviour
         }
 
         artifactCollectText.gameObject.SetActive(interactTextState);
-        interactTextState = false;
     }
 }
