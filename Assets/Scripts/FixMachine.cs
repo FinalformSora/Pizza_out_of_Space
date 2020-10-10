@@ -14,10 +14,14 @@ public class FixMachine : MonoBehaviour
     private GameObject connectWires;
     private bool interactTextState = false;
     private GameObject player;
+    public Text artifactCountText;
+
+    private int artifactCount;
 
     // Start is called before the first frame update
     void Start()
     {
+        artifactCount = 0;
         playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         interactText.gameObject.SetActive(interactTextState);
         connectWires = GameObject.FindWithTag("Wires");
@@ -48,6 +52,17 @@ public class FixMachine : MonoBehaviour
                     player.GetComponent<PlayerController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
+                }
+            }
+            if (hit.collider.GetComponent<Artifact>())
+            {
+                interactTextState = true;
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    artifactCount++;
+                    artifactCountText.text = artifactCount.ToString();
+                    hit.collider.gameObject.SetActive(false);
+                    interactTextState = false;
                 }
             }
         }
