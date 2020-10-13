@@ -7,10 +7,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    private Animator animator;
     private CharacterController player;
     private GameObject eyes;
     private Light light;
-    private Boolean lighton = false;
+    private bool lighton = false;
 
     private float moveSpeed = 6f;
     private float mouseSensitivity = 100f;
@@ -20,17 +22,24 @@ public class PlayerController : MonoBehaviour
     private float moveZ = 0f;
 
     private float xRotation = 0f;
-    private bool jumping;
+    private bool jumping = false;
+    private bool walking = false;
+    private bool running = false;
+    private bool idle = true;
 
     private Vector3 velocity = new Vector3(0f, 0f, 0f);
 
     void Start()
     {
+        animator = gameObject.transform.GetChild(1).GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         player = GetComponent<CharacterController>();
         eyes = GameObject.FindWithTag("MainCamera");
         light = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
         light.enabled = lighton;
+        animator.SetBool("walking", walking);
+        animator.SetBool("running", running);
+        animator.SetBool("idle", true);
     }
 
     // Update is called once per frame
@@ -50,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
         if (!jumping)
         {
             moveX = Input.GetAxis("Horizontal");
@@ -63,6 +73,20 @@ public class PlayerController : MonoBehaviour
 
         transform.Rotate(Vector3.up * mouseX);
         eyes.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        {
+            walking = true;
+            idle = false;
+            animator.SetBool("walking", walking);
+            animator.SetBool("idle", idle);
+        }
+        else
+        {
+            walking = false;
+            idle = true;
+            animator.SetBool("walking", walking);
+            animator.SetBool("idle", idle);
+        }
         player.Move(new Vector3(move.x * moveSpeed, velocity.y, move.z * moveSpeed) * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -70,13 +94,17 @@ public class PlayerController : MonoBehaviour
             lighton = !lighton;
         }
         light.enabled = lighton;
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && walking)
         {
             moveSpeed = 12f;
+            running = true;
+            animator.SetBool("running", running);
         }
         else
         {
             moveSpeed = 6f;
+            running = false;
+            animator.SetBool("running", running);
         }
     }
 }
