@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     private bool lighton = false;
 
     private float moveSpeed = 6f;
+    public float walkSpeed = 6f;
+    public float runSpeed = 12f;
+
     private float mouseSensitivity = 100f;
     private float gravity = -29.4f;
     private float jumpHeight = 1.5f;
@@ -94,17 +97,17 @@ public class PlayerController : MonoBehaviour
             lighton = !lighton;
         }
         light.enabled = lighton;
+
         if (Input.GetKey(KeyCode.LeftShift) && walking)
         {
-            moveSpeed = 12f;
+            moveSpeed = runSpeed;
             running = true;
-            animator.SetBool("running", running);
         }
         else
         {
-            moveSpeed = 6f;
+            moveSpeed = walkSpeed;
             running = false;
-            animator.SetBool("running", running);
         }
+        animator.SetBool("running", running);
     }
 }
