@@ -80,12 +80,12 @@ public class sirenHeadAi : MonoBehaviour
         GetComponent<Animator>().SetTrigger("move");
         navMeshAgent.SetDestination(setLocation.position);
         int num = 0;
-        Debug.Log(distanceToLocation);
+        //Debug.Log(distanceToLocation);
         if(distanceToLocation <= 2)
         {
             System.Random rnd = new System.Random();
             num = rnd.Next(1, 7);
-            Debug.Log("The rando " + num);
+            //Debug.Log("The rando " + num);
             switch(num)
             {
                 case 1:
