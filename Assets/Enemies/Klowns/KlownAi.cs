@@ -8,6 +8,7 @@ public class KlownAi : MonoBehaviour
     [SerializeField] Transform target;
     [SerializeField] float chaseRange = 5f;
     [SerializeField] float turnSpeed = 5f;
+    [SerializeField] float captureRange = 2f;
 
     NavMeshAgent navMeshAgent;
 
@@ -40,11 +41,11 @@ public class KlownAi : MonoBehaviour
     private void EngageTarget()
     {
         FaceTarget();
-        if (distanceToTarget >= navMeshAgent.stoppingDistance)
+        if (distanceToTarget >= captureRange)
         {
             ChaseTarget();
         }
-        if (distanceToTarget <= navMeshAgent.stoppingDistance)
+        if (distanceToTarget <= captureRange)
         {
             AttackTarget();
         }
@@ -75,5 +76,7 @@ public class KlownAi : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, chaseRange);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, captureRange);
     }
 }
