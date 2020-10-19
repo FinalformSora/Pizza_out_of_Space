@@ -26,9 +26,12 @@ public class PlayerController : MonoBehaviour
 
     private float xRotation = 0f;
     private bool jumping = false;
+
+ 
     private bool walking = false;
     private bool running = false;
     private bool idle = true;
+    public bool slowed = false;
 
     private Vector3 velocity = new Vector3(0f, 0f, 0f);
 
@@ -47,6 +50,18 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        if(slowed==false)
+        {
+            WalkNormal();
+        }
+        else if(slowed == true)
+        {
+            SlowTarget(2);
+        }
+    }
+
+    private void WalkNormal()
     {
         if (player.isGrounded && velocity.y < 0)
         {
@@ -76,7 +91,7 @@ public class PlayerController : MonoBehaviour
 
         transform.Rotate(Vector3.up * mouseX);
         eyes.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
         {
             walking = true;
             idle = false;
@@ -110,4 +125,13 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetBool("running", running);
     }
+
+    public void SlowTarget(float slowSpeed)
+    {
+
+        player.Move(new Vector3(0, 0, 0) * Time.deltaTime);
+
+    }
 }
+
+

@@ -60,6 +60,7 @@ public class KlownAi : MonoBehaviour
 
     private void AttackTarget()
     {
+        gameObject.GetComponent<NavMeshAgent>().velocity = Vector3.zero;        
         GetComponent<Animator>().SetBool("attack", true);
         //Debug.Log(name + " has seeked and is destroying " + target.name);
     }

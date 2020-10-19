@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,4 +17,5 @@ public class CodyHealth : MonoBehaviour
             GetComponent<LosingScreen>().HandleDeath();
         }
     }
+
 }
