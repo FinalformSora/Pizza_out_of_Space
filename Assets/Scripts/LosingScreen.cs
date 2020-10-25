@@ -6,7 +6,7 @@ public class LosingScreen : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] Canvas GameOverCanvas;
-
+    
     private void Start()
     {
         GameOverCanvas.enabled = false;

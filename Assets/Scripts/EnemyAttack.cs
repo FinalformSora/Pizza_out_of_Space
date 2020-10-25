@@ -9,10 +9,12 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float slowSpeed = 0;
 
     KlownAi enemyAi;
+    sirenHeadAi sAi;
     PlayerController pc;
     void Start()
     {
         enemyAi = FindObjectOfType<KlownAi>();
+        sAi = FindObjectOfType<sirenHeadAi>();
         target = FindObjectOfType<CodyHealth>();
         pc = FindObjectOfType<PlayerController>();
     }

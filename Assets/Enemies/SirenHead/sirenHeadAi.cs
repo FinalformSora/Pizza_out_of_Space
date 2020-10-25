@@ -23,6 +23,8 @@ public class sirenHeadAi : MonoBehaviour
 
     float distanceToTarget = Mathf.Infinity;
     float distanceToLocation = Mathf.Infinity;
+    float timer = 0;
+    public int secs;
 
     bool isProvoked = false;
 
@@ -66,17 +68,28 @@ public class sirenHeadAi : MonoBehaviour
         {
             AttackTarget();
         }
+        if (distanceToLocation >= chaseRange)
+        {
+            timer += Time.deltaTime;
+            secs = (int)(timer % 60);
+            Debug.Log("Timer " + secs);
+            if (timer >= 10)
+            {
+                isProvoked = false;
+                timer = 0;
+            }
+        }
     }
 
     private void ChaseTarget()
     {
-        GetComponent<Animator>().SetBool("attack", false);
         GetComponent<Animator>().SetTrigger("move");
         navMeshAgent.SetDestination(target.position);
     }
 
     private void WalkPath()
     {
+        GetComponent<Animator>().SetBool("attack", false);
         GetComponent<Animator>().SetTrigger("move");
         navMeshAgent.SetDestination(setLocation.position);
         int num = 0;
