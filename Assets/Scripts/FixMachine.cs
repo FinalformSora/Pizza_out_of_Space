@@ -25,7 +25,7 @@ public class FixMachine : MonoBehaviour
         playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         interactText.gameObject.SetActive(interactTextState);
         connectWires = GameObject.FindWithTag("Wires");
-        connectWires.gameObject.SetActive(false);
+        //connectWires.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
     }
 
