@@ -11,13 +11,15 @@ public class NpcAi : MonoBehaviour
     [SerializeField] Transform setLocation2;
     [SerializeField] Transform setLocation3;
     [SerializeField] Transform setLocation4;
+    [SerializeField] GameObject[] arcadeMachines;
 
     NavMeshAgent navMeshAgent;
 
     float distanceToLocation = Mathf.Infinity;
     float turnSpeed = 9;
 
-    bool arcadeMood, frontDesk, prizeDesk;
+    bool arcadeMood, frontDesk, prizeDesk, arcadeGameMood;
+    bool arcadeAvailable = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +37,7 @@ public class NpcAi : MonoBehaviour
         {
             Debug.Log("Arcade");
             navMeshAgent.SetDestination(setLocation.position);
-            SetIdleUponDestination(distanceToLocation);
+            SetIdleUponDestinationArcade(distanceToLocation);
         }
         if (frontDesk)
         {
@@ -50,6 +52,40 @@ public class NpcAi : MonoBehaviour
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestination(distanceToLocation);
             FaceTargetXneg();
+        }
+        if(arcadeGameMood)
+        {
+            //print("Chose an arcade");
+            GetComponent<Animator>().SetTrigger("move");
+            SetIdleUponDestination(distanceToLocation);
+        }
+    }
+
+    private void SetIdleUponDestinationArcade(float distanceToLocation)
+    {
+        if (distanceToLocation <= .4)
+        {
+            GetComponent<Animator>().SetBool("idle", true);
+            arcadeAvailable = true;
+            CheckAvailableArcade();
+        }
+    }
+
+    private void CheckAvailableArcade()
+    {
+        int i = 0;
+        while(arcadeAvailable)
+        {
+            print("Arcade " + arcadeMachines[i]);
+            if(arcadeMachines[i].tag == "Available")
+            {
+                arcadeAvailable = false;
+                navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
+                arcadeMachines[i].tag = "Unavailable";
+                arcadeMood = false;
+                arcadeGameMood = true;
+            }
+            i++;
         }
     }
 
@@ -70,7 +106,8 @@ public class NpcAi : MonoBehaviour
         arcadeMood = false;
         frontDesk = false;
         prizeDesk = false;
-
+        arcadeGameMood = false;
+        
         switch (num)
         {
             case 1:
