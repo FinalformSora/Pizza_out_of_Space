@@ -20,6 +20,11 @@ public class NpcAi : MonoBehaviour
 
     bool arcadeMood, frontDesk, prizeDesk, arcadeGameMood;
     bool arcadeAvailable = false;
+
+    bool isMoving = true;
+
+    Transform currentArcade;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,24 +36,25 @@ public class NpcAi : MonoBehaviour
     void Update()
     {
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
-        GetComponent<Animator>().SetTrigger("move");
-        Debug.Log("Dist is " + distanceToLocation);
+        GetComponent<Animator>().SetBool("move", isMoving);
+
+        //Debug.Log("Dist is " + distanceToLocation);
         if (arcadeMood)
         {
-            Debug.Log("Arcade");
+            //Debug.Log("Arcade");
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestinationArcade(distanceToLocation);
         }
         if (frontDesk)
         {
-            Debug.Log("Needs tikets");
+            //Debug.Log("Needs tikets");
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestination(distanceToLocation);
             FaceTargetXpos();
         }
         if (prizeDesk)
         {
-            Debug.Log("Selling Toys");
+            //Debug.Log("Selling Toys");
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestination(distanceToLocation);
             FaceTargetXneg();
@@ -56,16 +62,25 @@ public class NpcAi : MonoBehaviour
         if(arcadeGameMood)
         {
             //print("Chose an arcade");
-            GetComponent<Animator>().SetTrigger("move");
-            SetIdleUponDestination(distanceToLocation);
+            PlayGameAnimation();
         }
     }
 
-    private void SetIdleUponDestinationArcade(float distanceToLocation)
+    private void PlayGameAnimation()
+    {
+        //distanceToArcade = Vector3.Distance(setLocation.position, transform.position);
+        isMoving = true;
+        navMeshAgent.SetDestination(currentArcade.position);
+        if (distanceToLocation <= 2.3)
+        {
+            isMoving = false;
+        }
+    }    private void SetIdleUponDestinationArcade(float distanceToLocation)
     {
         if (distanceToLocation <= .4)
         {
-            GetComponent<Animator>().SetBool("idle", true);
+            //GetComponent<Animator>().SetBool("idle", true);
+            isMoving = false;
             arcadeAvailable = true;
             CheckAvailableArcade();
         }
@@ -80,7 +95,10 @@ public class NpcAi : MonoBehaviour
             if(arcadeMachines[i].tag == "Available")
             {
                 arcadeAvailable = false;
-                navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
+                
+                currentArcade = arcadeMachines[i].transform;
+                setLocation = currentArcade.transform;
+                //navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
                 arcadeMachines[i].tag = "Unavailable";
                 arcadeMood = false;
                 arcadeGameMood = true;
@@ -93,7 +111,7 @@ public class NpcAi : MonoBehaviour
     {
         if (distanceToLocation <= .4)
         {
-            GetComponent<Animator>().SetBool("idle", true);
+            isMoving = false;
         }
     }
 
