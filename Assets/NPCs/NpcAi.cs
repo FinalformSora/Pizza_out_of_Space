@@ -3,23 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SocialPlatforms;
 
 public class NpcAi : MonoBehaviour
 {
+    [SerializeField] int forceCase;
     [SerializeField] Transform setLocation;
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
     [SerializeField] Transform setLocation3;
     [SerializeField] Transform setLocation4;
     [SerializeField] GameObject[] arcadeMachines;
+    [SerializeField] GameObject[] walkAroundLocations;
 
     NavMeshAgent navMeshAgent;
 
     float distanceToLocation = Mathf.Infinity;
-    float turnSpeed = 9;
+    float distanceToArcade = Mathf.Infinity;
 
-    bool arcadeMood, frontDesk, prizeDesk, arcadeGameMood;
+    float turnSpeed = 3;
+
+    bool arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood;
     bool arcadeAvailable = false;
+    bool walkDestinationAvailable = true;
+
+    bool isMoving = true;
+
+    Transform currentArcade;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,24 +42,25 @@ public class NpcAi : MonoBehaviour
     void Update()
     {
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
-        GetComponent<Animator>().SetTrigger("move");
-        Debug.Log("Dist is " + distanceToLocation);
+        GetComponent<Animator>().SetBool("move", isMoving);
+
+        //Debug.Log("Dist is " + distanceToLocation);
         if (arcadeMood)
         {
-            Debug.Log("Arcade");
+            //Debug.Log("Arcade");
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestinationArcade(distanceToLocation);
         }
         if (frontDesk)
         {
-            Debug.Log("Needs tikets");
+            //Debug.Log("Needs tikets");
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestination(distanceToLocation);
             FaceTargetXpos();
         }
         if (prizeDesk)
         {
-            Debug.Log("Selling Toys");
+            //Debug.Log("Selling Toys");
             navMeshAgent.SetDestination(setLocation.position);
             SetIdleUponDestination(distanceToLocation);
             FaceTargetXneg();
@@ -56,16 +68,54 @@ public class NpcAi : MonoBehaviour
         if(arcadeGameMood)
         {
             //print("Chose an arcade");
-            GetComponent<Animator>().SetTrigger("move");
-            SetIdleUponDestination(distanceToLocation);
+            PlayGameAnimation();
+        }
+        if(walkAroundMood)
+        {
+            WalkAroundEstablishment();
         }
     }
 
+    private void WalkAroundEstablishment()
+    {
+        System.Random rnd = new System.Random();
+        if(walkDestinationAvailable)
+        {
+            int num = 0;
+            num = rnd.Next(1, 15);
+            setLocation = walkAroundLocations[num].transform;
+            //print("the cube selected " + setLocation.name);
+            navMeshAgent.SetDestination(setLocation.position);
+            walkDestinationAvailable = false;
+        }
+        //print("Final Destination " + distanceToLocation);
+        if(distanceToLocation <= .42)
+        {
+            walkDestinationAvailable = true;
+        }
+    }
+
+    private void PlayGameAnimation()
+    {
+        //distanceToArcade = Vector3.Distance(setLocation.position, transform.position);
+        isMoving = true;
+        navMeshAgent.SetDestination(currentArcade.position);
+        distanceToArcade = Vector3.Distance(currentArcade.position, transform.position);
+        print("Arcade " + distanceToArcade);
+        if (distanceToArcade <= 3)
+        {
+            navMeshAgent.isStopped = true;
+            GetComponent<Animator>().SetBool("gameing", true);
+            isMoving = false;
+        }
+    }   
+    
     private void SetIdleUponDestinationArcade(float distanceToLocation)
     {
         if (distanceToLocation <= .4)
         {
-            GetComponent<Animator>().SetBool("idle", true);
+            //GetComponent<Animator>().SetBool("idle", true);
+            isMoving = false;
             arcadeAvailable = true;
             CheckAvailableArcade();
         }
@@ -76,11 +126,14 @@ public class NpcAi : MonoBehaviour
         int i = 0;
         while(arcadeAvailable)
         {
-            print("Arcade " + arcadeMachines[i]);
+            //print("Arcade " + arcadeMachines[i]);
             if(arcadeMachines[i].tag == "Available")
             {
                 arcadeAvailable = false;
-                navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
+                
+                currentArcade = arcadeMachines[i].transform;
+                setLocation = currentArcade.transform;
+                //navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
                 arcadeMachines[i].tag = "Unavailable";
                 arcadeMood = false;
                 arcadeGameMood = true;
@@ -93,7 +146,7 @@ public class NpcAi : MonoBehaviour
     {
         if (distanceToLocation <= .4)
         {
-            GetComponent<Animator>().SetBool("idle", true);
+            isMoving = false;
         }
     }
 
@@ -107,7 +160,9 @@ public class NpcAi : MonoBehaviour
         frontDesk = false;
         prizeDesk = false;
         arcadeGameMood = false;
-        
+        walkAroundMood = false;
+
+        //num = forceCase;
         switch (num)
         {
             case 1:
@@ -123,7 +178,8 @@ public class NpcAi : MonoBehaviour
                 setLocation = setLocation3;
                 break;
             case 4:
-                setLocation = setLocation4;
+                //print("Walk Around");
+                walkAroundMood = true;
                 break;
         }
     }
