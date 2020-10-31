@@ -21,7 +21,7 @@ public class NpcAi : MonoBehaviour
     float distanceToLocation = Mathf.Infinity;
     float distanceToArcade = Mathf.Infinity;
 
-    float turnSpeed = 3;
+    float turnSpeed = 5;
 
     bool arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood;
     bool arcadeAvailable = false;
@@ -43,7 +43,6 @@ public class NpcAi : MonoBehaviour
     {
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
         GetComponent<Animator>().SetBool("move", isMoving);
-
         //Debug.Log("Dist is " + distanceToLocation);
         if (arcadeMood)
         {
@@ -154,7 +153,7 @@ public class NpcAi : MonoBehaviour
     {
         System.Random rnd = new System.Random();
         int num = 0;
-        num = rnd.Next(1, 4);
+        num = rnd.Next(4, 5);
 
         arcadeMood = false;
         frontDesk = false;
@@ -202,4 +201,25 @@ public class NpcAi : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
+
+    private void ForceArcadeMood()
+    {
+        arcadeMood = true;
+        frontDesk = false;
+        prizeDesk = false;
+        arcadeGameMood = false;
+        walkAroundMood = false;
+    }
+
+    private void ForceWalkAroundMood()
+    {
+        arcadeMood = true;
+        frontDesk = false;
+        prizeDesk = false;
+        arcadeGameMood = false;
+        walkAroundMood = true;
+    }
+
+
+
 }

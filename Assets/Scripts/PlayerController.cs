@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController player;
     private GameObject eyes;
     private Light light;
+
     private bool lighton = false;
 
     private float moveSpeed = 6f;
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour
         player.Move(new Vector3(0, 0, 0) * Time.deltaTime);
 
     }
+
 }
 
 

@@ -7,6 +7,8 @@ TagManager:
   - Wires
   - Available
   - Unavailable
+  - Satisfied
+  - Unsatisfied
   layers:
   - Default
   - TransparentFX
