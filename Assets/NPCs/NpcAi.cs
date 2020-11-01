@@ -23,15 +23,17 @@ public class NpcAi : MonoBehaviour
 
     float turnSpeed = 5;
 
-    bool arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood;
+    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
     bool arcadeAvailable = false;
     bool walkDestinationAvailable = true;
-
     bool isMoving = true;
+    bool reached = false;
 
     Transform currentArcade;
 
+    public MoodSates state;
     // Start is called before the first frame update
+
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -44,53 +46,64 @@ public class NpcAi : MonoBehaviour
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
         GetComponent<Animator>().SetBool("move", isMoving);
         //Debug.Log("Dist is " + distanceToLocation);
-        if (arcadeMood)
+       //enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
+
+        switch(state)
         {
-            //Debug.Log("Arcade");
-            navMeshAgent.SetDestination(setLocation.position);
-            SetIdleUponDestinationArcade(distanceToLocation);
+            case MoodSates.arcadeMood:
+                //Debug.Log("Arcade");
+                navMeshAgent.SetDestination(setLocation.position);
+                SetIdleUponDestinationArcade(distanceToLocation);
+                break;
+            case MoodSates.frontDesk:
+                //Debug.Log("Needs tikets");
+                navMeshAgent.SetDestination(setLocation.position);
+                if (!reached)
+                {
+                    SetIdleUponDestination(distanceToLocation);
+                }
+                FaceTargetXpos();
+                break;
+            case MoodSates.prizeDesk:
+                //Debug.Log("Selling Toys");
+                navMeshAgent.SetDestination(setLocation.position);
+                if(!reached)
+                {
+                    SetIdleUponDestination(distanceToLocation);
+                }
+                FaceTargetXneg();
+                break;
+            case MoodSates.arcadeGameMood:
+                //print("Chose an arcade");
+                PlayGameAnimation();
+                break;
+            case MoodSates.walkAroundMood:
+                WalkAroundEstablishment();
+                break;
         }
-        if (frontDesk)
-        {
-            //Debug.Log("Needs tikets");
-            navMeshAgent.SetDestination(setLocation.position);
-            SetIdleUponDestination(distanceToLocation);
-            FaceTargetXpos();
-        }
-        if (prizeDesk)
-        {
-            //Debug.Log("Selling Toys");
-            navMeshAgent.SetDestination(setLocation.position);
-            SetIdleUponDestination(distanceToLocation);
-            FaceTargetXneg();
-        }
-        if(arcadeGameMood)
-        {
-            //print("Chose an arcade");
-            PlayGameAnimation();
-        }
-        if(walkAroundMood)
-        {
-            WalkAroundEstablishment();
-        }
+        
     }
 
     private void WalkAroundEstablishment()
     {
+        isMoving = true;
         System.Random rnd = new System.Random();
+        print(distanceToLocation);
         if(walkDestinationAvailable)
         {
             int num = 0;
-            num = rnd.Next(1, 15);
+            num = rnd.Next(0, 14);
             setLocation = walkAroundLocations[num].transform;
-            //print("the cube selected " + setLocation.name);
+            print("the cube selected " + setLocation.name);
             navMeshAgent.SetDestination(setLocation.position);
             walkDestinationAvailable = false;
+            print("Going to my destination");
         }
         //print("Final Destination " + distanceToLocation);
-        if(distanceToLocation <= .42)
+        if(HasReachedWalkedAroundLocation())
         {
-            walkDestinationAvailable = true;
+            print("Walked to my location");
+            reached = true;
         }
     }
 
@@ -100,7 +113,7 @@ public class NpcAi : MonoBehaviour
         isMoving = true;
         navMeshAgent.SetDestination(currentArcade.position);
         distanceToArcade = Vector3.Distance(currentArcade.position, transform.position);
-        print("Arcade " + distanceToArcade);
+        //print("Arcade " + distanceToArcade);
         if (distanceToArcade <= 3)
         {
             navMeshAgent.isStopped = true;
@@ -134,8 +147,7 @@ public class NpcAi : MonoBehaviour
                 setLocation = currentArcade.transform;
                 //navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
                 arcadeMachines[i].tag = "Unavailable";
-                arcadeMood = false;
-                arcadeGameMood = true;
+                state = MoodSates.arcadeGameMood;
             }
             i++;
         }
@@ -143,42 +155,38 @@ public class NpcAi : MonoBehaviour
 
     private void SetIdleUponDestination(float distanceToLocation)
     {
-        if (distanceToLocation <= .4)
+        if (HasReachedLocation())
         {
+            print("NPC got here");
             isMoving = false;
         }
     }
 
+    
     private void GettingState()
     {
         System.Random rnd = new System.Random();
         int num = 0;
-        num = rnd.Next(4, 5);
-
-        arcadeMood = false;
-        frontDesk = false;
-        prizeDesk = false;
-        arcadeGameMood = false;
-        walkAroundMood = false;
+        num = rnd.Next(1, 5);
 
         //num = forceCase;
         switch (num)
         {
             case 1:
-                arcadeMood = true;
+                state = MoodSates.arcadeMood;
                 setLocation = setLocation1;
                 break;
             case 2:
-                frontDesk = true;
+                state = MoodSates.frontDesk;
                 setLocation = setLocation2;
                 break;
             case 3:
-                prizeDesk = true;
+                state = MoodSates.prizeDesk;
                 setLocation = setLocation3;
                 break;
             case 4:
                 //print("Walk Around");
-                walkAroundMood = true;
+                state = MoodSates.walkAroundMood;
                 break;
         }
     }
@@ -202,24 +210,40 @@ public class NpcAi : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
 
-    private void ForceArcadeMood()
+    private bool HasReachedLocation()
     {
-        arcadeMood = true;
-        frontDesk = false;
-        prizeDesk = false;
-        arcadeGameMood = false;
-        walkAroundMood = false;
+        if (distanceToLocation < .4)
+        {
+            reached = true;
+            tag = "Unsatisfied";
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private bool HasReachedWalkedAroundLocation()
+    {
+        if (distanceToLocation < .43)
+        {
+            walkDestinationAvailable = true;
+            tag = "Unsatisfied";
+            return true;
+        }
+        else
+        {
+            walkDestinationAvailable = false;
+            return false;
+        }
     }
 
     private void ForceWalkAroundMood()
     {
-        arcadeMood = true;
-        frontDesk = false;
-        prizeDesk = false;
-        arcadeGameMood = false;
-        walkAroundMood = true;
+        state = MoodSates.walkAroundMood;
     }
 
+    private void SetWalkTimer()
+    {
 
-
+    }
 }

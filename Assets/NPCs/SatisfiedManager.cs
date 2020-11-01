@@ -22,13 +22,19 @@ public class SatisfiedManager : MonoBehaviour
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        if (Physics.Raycast(ray.origin, ray.direction, out hit))
         {
-            print(hit.collider.gameObject.name + "has been destroyed!");
-            if (Input.GetKey(KeyCode.Mouse0))
+            //print(hit.collider.gameObject.name + " got hit");
+            if (Input.GetKey(KeyCode.Mouse0) && hit.collider.gameObject.tag == "Unsatisfied" )
             {
-                print("You Clicked");
+                hit.collider.gameObject.tag = "Satisfied";
+                hit.collider.gameObject.SendMessage("ForceWalkAroundMood");
+                print(hit.collider.gameObject.name + " has been clicked!");
             }
         }
+
+       
     }
+
+
 }
