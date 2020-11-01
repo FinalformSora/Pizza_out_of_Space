@@ -18,6 +18,8 @@ public class FixMachine : MonoBehaviour
 
     private int artifactCount;
 
+    private PlayerController playerManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,8 @@ public class FixMachine : MonoBehaviour
         connectWires = GameObject.FindWithTag("Wires");
         //connectWires.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
+
+        playerManager = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -54,7 +58,7 @@ public class FixMachine : MonoBehaviour
                     Cursor.visible = true;
                 }
             }
-            if (hit.collider.GetComponent<Artifact>())
+            else if (hit.collider.GetComponent<Artifact>())
             {
                 interactTextState = true;
                 if (Input.GetKeyDown(KeyCode.E))
@@ -62,6 +66,17 @@ public class FixMachine : MonoBehaviour
                     artifactCount++;
                     artifactCountText.text = artifactCount.ToString();
                     hit.collider.gameObject.SetActive(false);
+                    interactTextState = false;
+                }
+            }
+            else if (hit.collider.GetComponent<Spider>())
+            {
+                interactTextState = true;
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Spider spider = hit.collider.GetComponent<Spider>();
+                    spider.kill();
+                    playerManager.modifyMoney(spider.bounty);
                     interactTextState = false;
                 }
             }

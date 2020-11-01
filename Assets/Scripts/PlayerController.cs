@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -34,6 +35,11 @@ public class PlayerController : MonoBehaviour
     private bool idle = true;
     public bool slowed = false;
 
+    // Keeps track of money
+    public int startMoney = 50;
+    public Text moneyValueText;
+    private int money;
+
     private Vector3 velocity = new Vector3(0f, 0f, 0f);
 
     void Start()
@@ -47,6 +53,10 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("walking", walking);
         animator.SetBool("running", running);
         animator.SetBool("idle", true);
+
+        // Money
+        money = startMoney;
+        updateMoneyUI();
     }
 
     // Update is called once per frame
@@ -134,6 +144,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void modifyMoney(int amount)
+    {
+        money += amount;
+        updateMoneyUI();
+    }
+
+    void updateMoneyUI()
+    {
+        moneyValueText.text = "$ " + money;
+    }
 }
 
 
