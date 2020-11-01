@@ -73,10 +73,11 @@ public class sirenHeadAi : MonoBehaviour
             timer += Time.deltaTime;
             secs = (int)(timer % 60);
             Debug.Log("Timer " + secs);
-            if (timer >= 10)
+            if (secs >= 10)
             {
                 isProvoked = false;
                 timer = 0;
+                secs = 0;
             }
         }
     }

@@ -32,7 +32,9 @@ public class NpcAi : MonoBehaviour
     Transform currentArcade;
 
     public MoodSates state;
-    // Start is called before the first frame update
+    // Time components for walkTimer()
+    float timer = 0;
+    public int secs;
 
     void Start()
     {
@@ -79,6 +81,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case MoodSates.walkAroundMood:
                 WalkAroundEstablishment();
+                StateChangeTimer();
                 break;
         }
         
@@ -119,6 +122,7 @@ public class NpcAi : MonoBehaviour
             navMeshAgent.isStopped = true;
             GetComponent<Animator>().SetBool("gameing", true);
             isMoving = false;
+            StateChangeTimer();
         }
     }   
     
@@ -242,8 +246,22 @@ public class NpcAi : MonoBehaviour
         state = MoodSates.walkAroundMood;
     }
 
-    private void SetWalkTimer()
+    private void StateChangeTimer()
     {
+        System.Random rnd = new System.Random();
+        int num = 0;
+        num = rnd.Next(2, 4);
+
+        timer += Time.deltaTime;
+        secs = (int)(timer % 60);
+        int finalWalkTime = secs * num;
+        Debug.Log("Timer " + secs);
+
+        if (secs >= finalWalkTime)
+        {
+            timer = 0;
+            GettingState();
+        }
 
     }
 }
