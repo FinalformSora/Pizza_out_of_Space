@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController player;
     private GameObject eyes;
     private Light light;
+
     private bool lighton = false;
 
     private float moveSpeed = 6f;
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private float xRotation = 0f;
     private bool jumping = false;
 
- 
+
     private bool walking = false;
     private bool running = false;
     private bool idle = true;
