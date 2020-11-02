@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 1909324633619228454}
   - component: {fileID: 1909324633619228450}
   m_Layer: 0
-  m_Name: Player_Object 1
+  m_Name: Player_Object
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,7 +123,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909324633619228451}
-  m_LocalRotation: {x: -0, y: 0.70729613, z: -0, w: 0.7069174}
+  m_LocalRotation: {x: 0, y: 0.7072981, z: 0, w: 0.70691544}
   m_LocalPosition: {x: -88.87, y: 0.9, z: -15.6}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_Children:
@@ -146,7 +146,7 @@ CharacterController:
   m_Height: 2
   m_Radius: 0.4
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.15, z: 0}
@@ -274,12 +274,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1909324633619228453}
   feet: {fileID: 1909324633619228504}
-  clips_walking:
-  - {fileID: 8300000, guid: 57a0d38f36c5ace4fb4422af6a2d85ae, type: 3}
-  - {fileID: 8300000, guid: 04792aabdb80d0648b82abea351ded0c, type: 3}
-  clips_running:
-  - {fileID: 8300000, guid: 18cea78a5dd9b2549a6cdb46031ecfbd, type: 3}
-  - {fileID: 8300000, guid: 971c2fc395425e648a5a2257a701a5d2, type: 3}
+  clip_walking: {fileID: 0}
+  clip_running: {fileID: 0}
+  clip_jumping: {fileID: 0}
 --- !u!114 &1909324633619228507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +291,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 6
   runSpeed: 12
+  slowed: 0
+  startMoney: 50
+  moneyValueText: {fileID: 0}
 --- !u!114 &1909324633619228506
 MonoBehaviour:
   m_ObjectHideFlags: 0
