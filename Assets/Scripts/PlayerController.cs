@@ -42,7 +42,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity = new Vector3(0f, 0f, 0f);
 
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject GameOverCanvas;
     [SerializeField] private bool isPaused = false;
+    [SerializeField] public bool isGameOver = false;
 
     void Start()
     {
@@ -73,14 +75,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
+
+            if (isPaused)
+            {
+                ActivateMenu();
+            }
+            else if (isPaused)
+            {
+                DeactivateMenu();
+            }
         }
-        if (isPaused)
+
+        if (isGameOver)
         {
-            ActivateMenu();
-        }
-        else
-        {
-            DeactivateMenu();
+            HandleDeath();
         }
     }
 
@@ -185,6 +193,13 @@ public class PlayerController : MonoBehaviour
         pauseMenu.SetActive(false);
     }
 
+    void HandleDeath()
+    {
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        GameOverCanvas.SetActive(true);
+    }
 }
 
 
