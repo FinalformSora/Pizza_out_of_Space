@@ -72,27 +72,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceCase: 4
   setLocation: {fileID: 0}
+  frontDeskLine:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   setLocation1: {fileID: 0}
   setLocation2: {fileID: 0}
   setLocation3: {fileID: 0}
-  setLocation4: {fileID: 0}
   arcadeMachines:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

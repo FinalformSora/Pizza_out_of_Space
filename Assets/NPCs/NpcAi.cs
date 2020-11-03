@@ -82,7 +82,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case MoodSates.walkAroundMood:
                 WalkAroundEstablishment();
-                StateChangeTimer();
+                //StateChangeTimer();
                 break;
         }
 
@@ -92,21 +92,22 @@ public class NpcAi : MonoBehaviour
     {
         isMoving = true;
         System.Random rnd = new System.Random();
-        print(distanceToLocation);
+        //print(distanceToLocation);
         if (walkDestinationAvailable)
         {
             int num = 0;
-            num = rnd.Next(0, 14);
+            num = rnd.Next(0, walkAroundLocations.Length);
             setLocation = walkAroundLocations[num].transform;
-            print("the cube selected " + setLocation.name);
+            //print("New set Location" + setLocation);
+            //print("the cube selected " + setLocation.name);
             navMeshAgent.SetDestination(setLocation.position);
             walkDestinationAvailable = false;
-            print("Going to my destination");
+            //print("Going to my destination");
         }
         //print("Final Destination " + distanceToLocation);
         if (HasReachedWalkedAroundLocation())
         {
-            print("Walked to my location");
+            //print("Walked to my location");
             reached = true;
         }
     }
@@ -122,8 +123,9 @@ public class NpcAi : MonoBehaviour
         {
             navMeshAgent.isStopped = true;
             GetComponent<Animator>().SetBool("gameing", true);
+            FaceTargetZpos();
             isMoving = false;
-            StateChangeTimer();
+            //StateChangeTimer();
         }
     }
 
@@ -174,7 +176,7 @@ public class NpcAi : MonoBehaviour
         int num = 0;
         num = rnd.Next(1, 5);
 
-        //num = forceCase;
+        num = forceCase;
         switch (num)
         {
             case 1:
@@ -208,10 +210,10 @@ public class NpcAi : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x + 1, 0, direction.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
-    private void FaceTargetZneg()
+    private void FaceTargetZpos()
     {
         Vector3 direction = (setLocation.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z+1));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
 

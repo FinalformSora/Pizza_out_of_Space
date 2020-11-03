@@ -32,8 +32,6 @@ public class SatisfiedManager : MonoBehaviour
                 print(hit.collider.gameObject.name + " has been clicked!");
             }
         }
-
-       
     }
 
 

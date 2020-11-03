@@ -41,6 +41,6 @@ public class Timer : MonoBehaviour
             timer.text = hour + ":" + minute;
         }
 
-        Debug.Log("Hour: " + hour + "Minutes:" + minute + "time:" + time);
+        //Debug.Log("Hour: " + hour + "Minutes:" + minute + "time:" + time);
     }
 }
