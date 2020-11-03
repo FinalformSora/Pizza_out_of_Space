@@ -40,7 +40,10 @@ public class Spider : MonoBehaviour
     {
         dead = true;
         animator.SetBool("dead", dead);
+        agent.velocity = Vector3.zero;
         agent.isStopped = dead;
+
+        this.gameObject.GetComponentInParent<DynamicSpiderCreation>().killASpider();
 
         Destroy(this.gameObject, destroyDelay);
     }

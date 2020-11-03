@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private Animator animator;
     private CharacterController player;
     private GameObject eyes;
     private Light light;
@@ -44,15 +43,11 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        animator = gameObject.transform.GetChild(1).GetComponent<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         player = GetComponent<CharacterController>();
         eyes = GameObject.FindWithTag("MainCamera");
         light = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
         light.enabled = lighton;
-        animator.SetBool("walking", walking);
-        animator.SetBool("running", running);
-        animator.SetBool("idle", true);
 
         // Money
         money = startMoney;
@@ -106,15 +101,11 @@ public class PlayerController : MonoBehaviour
         {
             walking = true;
             idle = false;
-            animator.SetBool("walking", walking);
-            animator.SetBool("idle", idle);
         }
         else
         {
             walking = false;
             idle = true;
-            animator.SetBool("walking", walking);
-            animator.SetBool("idle", idle);
         }
         player.Move(new Vector3(move.x * moveSpeed, velocity.y, move.z * moveSpeed) * Time.deltaTime);
 
@@ -134,7 +125,6 @@ public class PlayerController : MonoBehaviour
             moveSpeed = walkSpeed;
             running = false;
         }
-        animator.SetBool("running", running);
     }
 
     public void SlowTarget(float slowSpeed)
@@ -148,11 +138,17 @@ public class PlayerController : MonoBehaviour
     {
         money += amount;
         updateMoneyUI();
+        makeMoneySound();
     }
 
     void updateMoneyUI()
     {
         moneyValueText.text = "$ " + money;
+    }
+
+    void makeMoneySound()
+    {
+
     }
 }
 
