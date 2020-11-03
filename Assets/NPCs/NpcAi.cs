@@ -9,6 +9,7 @@ public class NpcAi : MonoBehaviour
 {
     [SerializeField] int forceCase;
     [SerializeField] Transform setLocation;
+    [SerializeField] GameObject[] frontDeskLine;
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
     [SerializeField] Transform setLocation3;
@@ -182,7 +183,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case 2:
                 state = MoodSates.frontDesk;
-                setLocation = setLocation2;
+                FrontDeskLineMaker();
                 break;
             case 3:
                 state = MoodSates.prizeDesk;
@@ -263,5 +264,19 @@ public class NpcAi : MonoBehaviour
             GettingState();
         }
 
+    }
+
+    private void FrontDeskLineMaker()
+    {
+        foreach(GameObject line in frontDeskLine)
+        {
+            if(line.tag == "Available")
+            {
+                setLocation = line.transform;
+                navMeshAgent.SetDestination(line.transform.position);
+                line.tag = "Unavialable";
+                break;
+            }
+        }   
     }
 }
