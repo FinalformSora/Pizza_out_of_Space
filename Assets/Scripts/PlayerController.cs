@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
     public void DeactivateMenu()
     {
         Time.timeScale = 1;
-        AudioListener.pause = true;
+        AudioListener.pause = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         pauseMenu.SetActive(false);

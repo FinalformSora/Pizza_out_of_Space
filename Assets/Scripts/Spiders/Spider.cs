@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -50,11 +51,19 @@ public class Spider : MonoBehaviour
 
     void moveRandomly()
     {
+
         if (!agent.hasPath && !dead)
         {
             Vector3 nextPosition = getRandomPos();
             tf.rotation = Quaternion.LookRotation(new Vector3(nextPosition.x, nextPosition.y, nextPosition.z));
-            agent.SetDestination(nextPosition);
+            try
+            {
+                agent.SetDestination(nextPosition);
+            } catch (Exception e)
+            {
+                Debug.Log(e);
+                kill();
+            }
         }
     }
 

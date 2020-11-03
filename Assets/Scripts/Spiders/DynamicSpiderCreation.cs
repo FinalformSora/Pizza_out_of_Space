@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -32,12 +33,18 @@ public class DynamicSpiderCreation : MonoBehaviour
         {
             if (numSpiders != maxSpiders)
             {
-                GameObject randomPlane = planes[Random.Range(0, planes.Length)];
+                GameObject randomPlane = planes[UnityEngine.Random.Range(0, planes.Length)];
                 Vector3 randomPosition = randomPositionOnPlane(randomPlane);
                 GameObject go = Instantiate(spiderPrefab, randomPosition, Quaternion.identity);
-                go.GetComponent<NavMeshAgent>().Warp(randomPosition);
-                go.transform.parent = this.gameObject.transform;
-                numSpiders++;
+                try
+                {
+                    go.GetComponent<NavMeshAgent>().Warp(randomPosition);
+                    go.transform.parent = this.gameObject.transform;
+                    numSpiders++;
+                } catch (Exception e)
+                {
+                    Debug.Log(e);
+                }
             }
             internalClock = 0f;
         }
