@@ -5,16 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Death Scene.unity
-    guid: 515e5958bf5856d42963dd02a3c5f0fd
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 989b00370f097e14eb7dacac8fa9e562
   - enabled: 1
     path: Assets/Scenes/New Jesus.unity
     guid: d3f37793d9c8bca4b8e04a86bb0c1357
   - enabled: 1
     path: Assets/Scenes/Level.unity
     guid: 346bacdb74351a249830232d6179beab
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Jesus Changes.unity
+    guid: 515e5958bf5856d42963dd02a3c5f0fd
   m_configObjects: {}

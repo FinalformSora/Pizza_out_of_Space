@@ -14,7 +14,7 @@ public class CodyHealth : MonoBehaviour
         if (hitPoints <= 0)
         {
             //Debug.Log("You dead, my Glip glop");
-            GetComponent<LosingScreen>().HandleDeath();
+            GetComponent<PlayerController>().isGameOver = true;
         }
     }
 
