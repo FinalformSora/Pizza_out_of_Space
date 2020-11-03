@@ -9,6 +9,7 @@ public class NpcAi : MonoBehaviour
 {
     [SerializeField] int forceCase;
     [SerializeField] Transform setLocation;
+    [SerializeField] GameObject[] frontDeskLine;
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
     [SerializeField] Transform setLocation3;
@@ -32,7 +33,9 @@ public class NpcAi : MonoBehaviour
     Transform currentArcade;
 
     public MoodSates state;
-    // Start is called before the first frame update
+    // Time components for walkTimer()
+    float timer = 0;
+    public int secs;
 
     void Start()
     {
@@ -46,9 +49,9 @@ public class NpcAi : MonoBehaviour
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
         GetComponent<Animator>().SetBool("move", isMoving);
         //Debug.Log("Dist is " + distanceToLocation);
-       //enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
+        //enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
 
-        switch(state)
+        switch (state)
         {
             case MoodSates.arcadeMood:
                 //Debug.Log("Arcade");
@@ -67,7 +70,7 @@ public class NpcAi : MonoBehaviour
             case MoodSates.prizeDesk:
                 //Debug.Log("Selling Toys");
                 navMeshAgent.SetDestination(setLocation.position);
-                if(!reached)
+                if (!reached)
                 {
                     SetIdleUponDestination(distanceToLocation);
                 }
@@ -79,9 +82,10 @@ public class NpcAi : MonoBehaviour
                 break;
             case MoodSates.walkAroundMood:
                 WalkAroundEstablishment();
+                StateChangeTimer();
                 break;
         }
-        
+
     }
 
     private void WalkAroundEstablishment()
@@ -89,7 +93,7 @@ public class NpcAi : MonoBehaviour
         isMoving = true;
         System.Random rnd = new System.Random();
         print(distanceToLocation);
-        if(walkDestinationAvailable)
+        if (walkDestinationAvailable)
         {
             int num = 0;
             num = rnd.Next(0, 14);
@@ -100,7 +104,7 @@ public class NpcAi : MonoBehaviour
             print("Going to my destination");
         }
         //print("Final Destination " + distanceToLocation);
-        if(HasReachedWalkedAroundLocation())
+        if (HasReachedWalkedAroundLocation())
         {
             print("Walked to my location");
             reached = true;
@@ -119,9 +123,10 @@ public class NpcAi : MonoBehaviour
             navMeshAgent.isStopped = true;
             GetComponent<Animator>().SetBool("gameing", true);
             isMoving = false;
+            StateChangeTimer();
         }
-    }   
-    
+    }
+
     private void SetIdleUponDestinationArcade(float distanceToLocation)
     {
         if (distanceToLocation <= .4)
@@ -136,13 +141,13 @@ public class NpcAi : MonoBehaviour
     private void CheckAvailableArcade()
     {
         int i = 0;
-        while(arcadeAvailable)
+        while (arcadeAvailable)
         {
             //print("Arcade " + arcadeMachines[i]);
-            if(arcadeMachines[i].tag == "Available")
+            if (arcadeMachines[i].tag == "Available")
             {
                 arcadeAvailable = false;
-                
+
                 currentArcade = arcadeMachines[i].transform;
                 setLocation = currentArcade.transform;
                 //navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
@@ -162,7 +167,7 @@ public class NpcAi : MonoBehaviour
         }
     }
 
-    
+
     private void GettingState()
     {
         System.Random rnd = new System.Random();
@@ -178,7 +183,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case 2:
                 state = MoodSates.frontDesk;
-                setLocation = setLocation2;
+                FrontDeskLineMaker();
                 break;
             case 3:
                 state = MoodSates.prizeDesk;
@@ -242,8 +247,36 @@ public class NpcAi : MonoBehaviour
         state = MoodSates.walkAroundMood;
     }
 
-    private void SetWalkTimer()
+    private void StateChangeTimer()
     {
+        System.Random rnd = new System.Random();
+        int num = 0;
+        num = rnd.Next(2, 4);
 
+        timer += Time.deltaTime;
+        secs = (int)(timer % 60);
+        int finalWalkTime = secs * num;
+        Debug.Log("Timer " + secs);
+
+        if (secs >= finalWalkTime)
+        {
+            timer = 0;
+            GettingState();
+        }
+
+    }
+
+    private void FrontDeskLineMaker()
+    {
+        foreach (GameObject line in frontDeskLine)
+        {
+            if (line.tag == "Available")
+            {
+                setLocation = line.transform;
+                navMeshAgent.SetDestination(line.transform.position);
+                line.tag = "Unavialable";
+                break;
+            }
+        }
     }
 }
