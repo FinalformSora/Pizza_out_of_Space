@@ -75,18 +75,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
-
-            if (isPaused)
-            {
-                ActivateMenu();
-            }
-            else if (isPaused)
-            {
-                DeactivateMenu();
-            }
         }
 
-        if (isGameOver)
+        if (isPaused && !isGameOver)
+        {
+            ActivateMenu();
+        }
+        else if (!isPaused && !isGameOver)
+        {
+            DeactivateMenu();
+        }
+        else if (isGameOver)
         {
             HandleDeath();
         }
