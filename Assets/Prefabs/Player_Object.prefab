@@ -107,10 +107,9 @@ GameObject:
   - component: {fileID: 1909324633619228505}
   - component: {fileID: 1909324633619228507}
   - component: {fileID: 1909324633619228506}
-  - component: {fileID: 1909324633619228454}
   - component: {fileID: 1909324633619228450}
   m_Layer: 0
-  m_Name: Player_Object 1
+  m_Name: Player_Object
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -274,12 +273,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1909324633619228453}
   feet: {fileID: 1909324633619228504}
-  clips_walking:
-  - {fileID: 8300000, guid: 57a0d38f36c5ace4fb4422af6a2d85ae, type: 3}
-  - {fileID: 8300000, guid: 04792aabdb80d0648b82abea351ded0c, type: 3}
-  clips_running:
-  - {fileID: 8300000, guid: 18cea78a5dd9b2549a6cdb46031ecfbd, type: 3}
-  - {fileID: 8300000, guid: 971c2fc395425e648a5a2257a701a5d2, type: 3}
+  clip_walking: {fileID: 0}
+  clip_running: {fileID: 0}
+  clip_jumping: {fileID: 0}
 --- !u!114 &1909324633619228507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +290,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 6
   runSpeed: 12
+  slowed: 0
+  startMoney: 50
+  moneyValueText: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  GameOverCanvas: {fileID: 0}
+  isPaused: 0
+  isGameOver: 0
 --- !u!114 &1909324633619228506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,19 +314,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   artifactCountText: {fileID: 0}
---- !u!114 &1909324633619228454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909324633619228451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c735fc821256f0b4daf0d6191ec267de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameOverCanvas: {fileID: 0}
+  progressBar: {fileID: 0}
 --- !u!114 &1909324633619228450
 MonoBehaviour:
   m_ObjectHideFlags: 0
