@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using UnityEditor;
 using UnityEngine;
 
 public class DynamicCollectibleCreation : MonoBehaviour
 {
     public GameObject artifact;
+    public Transform allArtifacts;
 
     public int numCollectibles = 10;
     public Tuple xRange;
@@ -58,7 +56,6 @@ public class DynamicCollectibleCreation : MonoBehaviour
         }
     }
 
-    [Serializable]
     public class Tuple
     {
         public float min;
@@ -69,6 +66,11 @@ public class DynamicCollectibleCreation : MonoBehaviour
     {
         for (int i = 0; i < numCollectibles; i++)
         {
+            Vector3 randomColliderArea = spawnAreas[Random.Range(0, spawnAreas.Length)].bounds.size;
+            float randomPosX = Random.Range(0, randomColliderArea.x);
+            float randomPosZ = Random.Range(0, randomColliderArea.z);
+            GameObject collectible = Instantiate(artifact, new Vector3(randomPosX, randomColliderArea.y, randomPosZ), Quaternion.identity);
+            collectible.transform.parent = allArtifacts;
         }
 
     }
