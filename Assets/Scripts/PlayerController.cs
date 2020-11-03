@@ -41,9 +41,13 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 velocity = new Vector3(0f, 0f, 0f);
 
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private bool isPaused = false;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         player = GetComponent<CharacterController>();
         eyes = GameObject.FindWithTag("MainCamera");
         light = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
@@ -57,13 +61,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(slowed==false)
+        if (slowed == false)
         {
             WalkNormal();
         }
-        else if(slowed == true)
+        else if (slowed == true)
         {
             SlowTarget(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = !isPaused;
+        }
+        if (isPaused)
+        {
+            ActivateMenu();
+        }
+        else
+        {
+            DeactivateMenu();
         }
     }
 
@@ -148,8 +165,26 @@ public class PlayerController : MonoBehaviour
 
     void makeMoneySound()
     {
-
     }
+
+    public void ActivateMenu()
+    {
+        Time.timeScale = 0;
+        AudioListener.pause = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        pauseMenu.SetActive(true);
+    }
+
+    public void DeactivateMenu()
+    {
+        Time.timeScale = 1;
+        AudioListener.pause = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        pauseMenu.SetActive(false);
+    }
+
 }
 
 
