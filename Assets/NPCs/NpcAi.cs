@@ -13,7 +13,7 @@ public class NpcAi : MonoBehaviour
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
     [SerializeField] Transform setLocation3;
-    [SerializeField] Transform setLocation4;
+    //[SerializeField] Transform setLocation4;
     [SerializeField] GameObject[] arcadeMachines;
     [SerializeField] GameObject[] walkAroundLocations;
 
