@@ -1150,15 +1150,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 288040431}
     m_Modifications:
+    - target: {fileID: 5669371924020626358, guid: 916d943dd0d2c2243867cd2fe369a341,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5669371924663460509, guid: 916d943dd0d2c2243867cd2fe369a341,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 796031198}
+    - target: {fileID: 5669371924748491151, guid: 916d943dd0d2c2243867cd2fe369a341,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5669371924776147648, guid: 916d943dd0d2c2243867cd2fe369a341,
         type: 3}
       propertyPath: m_Name
       value: OptionsMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669371924776147648, guid: 916d943dd0d2c2243867cd2fe369a341,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5669371924776147663, guid: 916d943dd0d2c2243867cd2fe369a341,
         type: 3}

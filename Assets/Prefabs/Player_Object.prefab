@@ -107,7 +107,6 @@ GameObject:
   - component: {fileID: 1909324633619228505}
   - component: {fileID: 1909324633619228507}
   - component: {fileID: 1909324633619228506}
-  - component: {fileID: 1909324633619228454}
   - component: {fileID: 1909324633619228450}
   m_Layer: 0
   m_Name: Player_Object
@@ -294,6 +293,10 @@ MonoBehaviour:
   slowed: 0
   startMoney: 50
   moneyValueText: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  GameOverCanvas: {fileID: 0}
+  isPaused: 0
+  isGameOver: 0
 --- !u!114 &1909324633619228506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,19 +314,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   artifactCountText: {fileID: 0}
---- !u!114 &1909324633619228454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1909324633619228451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c735fc821256f0b4daf0d6191ec267de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameOverCanvas: {fileID: 0}
+  progressBar: {fileID: 0}
 --- !u!114 &1909324633619228450
 MonoBehaviour:
   m_ObjectHideFlags: 0
