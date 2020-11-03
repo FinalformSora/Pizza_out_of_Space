@@ -37,7 +37,8 @@ public class FootSteps : MonoBehaviour
                     feet.Stop();
                     feet.clip = clip_running;
                 }
-            } else
+            }
+            else
             {
                 if (feet.isPlaying && (feet.clip == clip_running || feet.clip == clip_jumping))
                 {
