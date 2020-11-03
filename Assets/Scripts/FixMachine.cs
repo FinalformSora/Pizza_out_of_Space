@@ -20,6 +20,10 @@ public class FixMachine : MonoBehaviour
 
     private PlayerController playerManager;
 
+    // Progress Bar controller
+    public Image progressBar;
+    private bool progressBarState = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,11 +49,12 @@ public class FixMachine : MonoBehaviour
         RaycastHit hit;
         Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
 
+        // Can make this alot cleaner
         if(Physics.Raycast(ray, out hit, distance, layerMask))
         {
+            interactTextState = true;
             if (hit.collider.GetComponent<Arcade>())
             {
-                interactTextState = true;
                 if (Input.GetKeyDown(KeyCode.E)){
                     connectWires.gameObject.SetActive(true);
                     interactTextState = false;
@@ -60,7 +65,6 @@ public class FixMachine : MonoBehaviour
             }
             else if (hit.collider.GetComponent<Artifact>())
             {
-                interactTextState = true;
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     artifactCount++;
@@ -71,7 +75,6 @@ public class FixMachine : MonoBehaviour
             }
             else if (hit.collider.GetComponent<Spider>())
             {
-                interactTextState = true;
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     Spider spider = hit.collider.GetComponent<Spider>();
@@ -80,9 +83,30 @@ public class FixMachine : MonoBehaviour
                     interactTextState = false;
                 }
             }
+            else if (hit.collider.GetComponent<PizzaMaker>())
+            {
+                PizzaMaker pizzaMaker = hit.collider.GetComponent<PizzaMaker>();
+                progressBarState = true;
+                progressBar.fillAmount = (pizzaMaker.progress % 60) / pizzaMaker.taskTime;
+                if (Input.GetKey(KeyCode.E))
+                {
+                    pizzaMaker.makePizza();
+
+                    if (pizzaMaker.progress % 60 >= pizzaMaker.taskTime)
+                    {
+                        playerManager.modifyMoney(pizzaMaker.bounty);
+                        pizzaMaker.finishPizza();
+                        interactTextState = false;
+                        progressBarState = false;
+                    }
+
+                }
+            }
         }
 
         interactText.gameObject.SetActive(interactTextState);
+        progressBar.gameObject.SetActive(progressBarState);
         interactTextState = false;
+        progressBarState = false;
     }
 }
