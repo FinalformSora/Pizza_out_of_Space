@@ -145,14 +145,14 @@ public class NpcAi : MonoBehaviour
         int i = 0;
         while (arcadeAvailable)
         {
-            //print("Arcade " + arcadeMachines[i]);
+            print("Arcade " + arcadeMachines[i]);
             if (arcadeMachines[i].tag == "Available")
             {
                 arcadeAvailable = false;
 
                 currentArcade = arcadeMachines[i].transform;
                 setLocation = currentArcade.transform;
-                //navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
+                navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
                 arcadeMachines[i].tag = "Unavailable";
                 state = MoodSates.arcadeGameMood;
             }
