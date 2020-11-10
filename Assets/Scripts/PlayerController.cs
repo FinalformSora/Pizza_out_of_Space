@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private GameObject eyes;
     private Light light;
 
-    private bool lighton = false;
+    public bool lighton = false;
 
     private float moveSpeed = 6f;
     public float walkSpeed = 6f;
@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     private bool running = false;
     private bool idle = true;
     public bool slowed = false;
+
+    public AudioSource flashlightAudio;
 
     // Keeps track of money
     public int startMoney = 50;
@@ -56,9 +58,6 @@ public class PlayerController : MonoBehaviour
         eyes = GameObject.FindWithTag("MainCamera");
         light = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
         light.enabled = lighton;
-        animator.SetBool("walking", walking);
-        animator.SetBool("running", running);
-        animator.SetBool("idle", true);
 
         // Money
         money = startMoney;
@@ -130,23 +129,20 @@ public class PlayerController : MonoBehaviour
         {
             walking = true;
             idle = false;
-            animator.SetBool("walking", walking);
-            animator.SetBool("idle", idle);
         }
         else
         {
             walking = false;
             idle = true;
-            animator.SetBool("walking", walking);
-            animator.SetBool("idle", idle);
         }
         player.Move(new Vector3(move.x * moveSpeed, velocity.y, move.z * moveSpeed) * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.F))
         {
+            flashlightAudio.Play();
             lighton = !lighton;
+            light.enabled = lighton;
         }
-        light.enabled = lighton;
 
         if (Input.GetKey(KeyCode.LeftShift) && walking)
         {
@@ -158,7 +154,6 @@ public class PlayerController : MonoBehaviour
             moveSpeed = walkSpeed;
             running = false;
         }
-        animator.SetBool("running", running);
     }
 
     public void SlowTarget(float slowSpeed)
