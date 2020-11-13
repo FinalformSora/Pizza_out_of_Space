@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEditor;
+using UnityEngine.UIElements;
 
 public class sirenHeadAi : MonoBehaviour
 {
@@ -15,9 +17,14 @@ public class sirenHeadAi : MonoBehaviour
     [SerializeField] Transform setLocation5;
     [SerializeField] Transform setLocation6;
 
-    [SerializeField] float chaseRange = 5f;
+    [SerializeField] public float chaseRange = 5f;
     [SerializeField] float turnSpeed = 5f;
+    //Components for Eye Vision
     [SerializeField] float captureRange = 2f;
+    [Range(0, 360)]  public float viewAngle;
+    [SerializeField] public LayerMask targetMask;
+    [SerializeField] public LayerMask obstacleMask;
+    public List<Transform> visibleTargets = new List<Transform>();
 
     NavMeshAgent navMeshAgent;
 
@@ -31,13 +38,13 @@ public class sirenHeadAi : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        StartCoroutine("FindTaregtWithDelay", 1f);
     }
 
     void Update()
     {
         distanceToTarget = Vector3.Distance(target.position, transform.position);
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
-
         if (isProvoked)
         {
             EngageTarget();
@@ -72,7 +79,7 @@ public class sirenHeadAi : MonoBehaviour
         {
             timer += Time.deltaTime;
             secs = (int)(timer % 60);
-            Debug.Log("Timer " + secs);
+            //Debug.Log("Timer " + secs);
             if (secs >= 10)
             {
                 isProvoked = false;
@@ -137,12 +144,67 @@ public class sirenHeadAi : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
 
+//    private void OnTriggerStay(Collider other)
+//    {
+//        print("SirenHead saw " + other.gameObject.name);
+//        dir = other.transform.position - transform.position;
+//        //print("Direction " + dir);
+//       float angle = Vector3.Angle(dir, transform.forward);
+//        print("angle " + angle);
+//    }
+
+    IEnumerator FindTaregtWithDelay(float delay)
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(delay);
+            LookVision();
+        }
+    }
+
+    void LookVision()
+    {
+        visibleTargets.Clear();
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, captureRange, targetMask);
+        foreach(Collider tar in targetsInViewRadius)
+        {
+            print(tar);
+        }
+        for (int i = 0; i < targetsInViewRadius.Length; i++)
+        {
+            Transform target = targetsInViewRadius[i].transform;
+            Vector3 dirToTarget = (target.position - transform.position).normalized;
+            if(Vector3.Angle (transform.forward, dirToTarget) < viewAngle/2)
+            {
+                print("Taregt " + target);
+                float distToTarget = Vector3.Distance(transform.position, target.position);
+                if(!Physics.Raycast (transform.position, dirToTarget, distToTarget, obstacleMask))
+                {
+                    print("Siren Saw " + target);
+                    visibleTargets.Add(target);
+                }
+            }
+        }
+    }
+
+    public Vector3 DirectionFromAngle(float angleDegrees, bool angleIsGlobal)
+    {
+        if(!angleIsGlobal)
+        {
+            angleDegrees += transform.eulerAngles.y;
+        }
+        return new Vector3(Mathf.Sin(angleDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleDegrees * Mathf.Deg2Rad));
+    }
+
     //Coats an area that provokes AI to chase
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, chaseRange);
+        //Gizmos.DrawWireSphere(transform.position, chaseRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, captureRange);
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(transform.position, transform.forward);
+        //Gizmos.DrawRay()
     }
 }
