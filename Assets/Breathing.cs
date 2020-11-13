@@ -22,7 +22,7 @@ public class Breathing : MonoBehaviour
     {
         if (!mouthAudio.isPlaying)
         {
-            if (fear.fear > 50)
+            if (fear.fear > 50 || fear.inDanger)
             {
                 mouthAudio.clip = fastBreathing;
                 mouthAudio.Play();
