@@ -20,6 +20,8 @@ public class Peanut : MonoBehaviour
     public AudioClip audioClip;
     private AudioSource audioSource;
 
+    [SerializeField] float damage = 40f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +58,10 @@ public class Peanut : MonoBehaviour
                 {
                     if (hit.collider.GetComponent<PlayerController>())
                     {
+                        if (hit.distance < 2f)
+                        {
+                            hit.collider.GetComponent<CodyHealth>().TakeDamage(damage);
+                        }
                         if (!audioSource.isPlaying)
                             audioSource.Play();
                         playerFear.invokeFear();
