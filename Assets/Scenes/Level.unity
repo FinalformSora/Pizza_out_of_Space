@@ -2730,6 +2730,7 @@ MonoBehaviour:
   sightRange: 1000
   isBeingLookedAt: 0
   audioClip: {fileID: 8300000, guid: 40ec810adf286e145a31dd2a4ab04ceb, type: 3}
+  damage: 40
 --- !u!195 &47321461
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -17206,7 +17207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4514486541cc14395af0e8c2f6f6e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fear: 50
+  fear: 0
   maxFear: 100
   lowestFlickerInterval: 5
   dangerWearoffTime: 5
@@ -37377,8 +37378,8 @@ MonoBehaviour:
   - {fileID: 1816224634}
   spiderPrefab: {fileID: 8524416663198071941, guid: 78a90927afcf2894e8442279deda4dfb,
     type: 3}
-  spawnTimeSeconds: 5
-  maxSpiders: 10
+  spawnTimeSeconds: 1
+  maxSpiders: 100
 --- !u!4 &930133741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a56a2883e558d444183764a749a45150,
@@ -48368,7 +48369,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165823849}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -90754,15 +90755,35 @@ PrefabInstance:
       propertyPath: flashlightAudio
       value: 
       objectReference: {fileID: 607167663}
+    - target: {fileID: 1909324633619228507, guid: 0f93523dad9b4de4a8ced890094713f6,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1909324633619228507, guid: 0f93523dad9b4de4a8ced890094713f6,
+        type: 3}
+      propertyPath: runSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1909324633746033572, guid: 0f93523dad9b4de4a8ced890094713f6,
         type: 3}
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 1909324633746033572, guid: 0f93523dad9b4de4a8ced890094713f6,
+        type: 3}
+      propertyPath: m_Name
+      value: MainCamera
+      objectReference: {fileID: 0}
     - target: {fileID: 1909324633746033575, guid: 0f93523dad9b4de4a8ced890094713f6,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 1.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 1909324633746033624, guid: 0f93523dad9b4de4a8ced890094713f6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2602528176970551153, guid: 0f93523dad9b4de4a8ced890094713f6,
         type: 3}
