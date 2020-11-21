@@ -56,14 +56,7 @@ public class Spider : MonoBehaviour
         {
             Vector3 nextPosition = getRandomPos();
             tf.rotation = Quaternion.LookRotation(new Vector3(nextPosition.x, nextPosition.y, nextPosition.z));
-            try
-            {
-                agent.SetDestination(nextPosition);
-            } catch (Exception e)
-            {
-                Debug.Log(e);
-                kill();
-            }
+            agent.SetDestination(nextPosition);
         }
     }
 

@@ -16,6 +16,8 @@ public class FixMachine : MonoBehaviour
     private GameObject player;
     public Text artifactCountText;
 
+    public AudioSource handsAudio;
+
     private int artifactCount;
 
     private PlayerController playerManager;
@@ -67,6 +69,7 @@ public class FixMachine : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    handsAudio.Play();
                     artifactCount++;
                     artifactCountText.text = artifactCount.ToString();
                     hit.collider.gameObject.SetActive(false);

@@ -35,15 +35,12 @@ public class DynamicSpiderCreation : MonoBehaviour
             {
                 GameObject randomPlane = planes[UnityEngine.Random.Range(0, planes.Length)];
                 Vector3 randomPosition = randomPositionOnPlane(randomPlane);
-                GameObject go = Instantiate(spiderPrefab, randomPosition, Quaternion.identity);
-                try
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(randomPosition, out hit, 1000f, NavMesh.AllAreas))
                 {
-                    go.GetComponent<NavMeshAgent>().Warp(randomPosition);
+                    GameObject go = Instantiate(spiderPrefab, hit.position, Quaternion.identity);
                     go.transform.parent = this.gameObject.transform;
                     numSpiders++;
-                } catch (Exception e)
-                {
-                    Debug.Log(e);
                 }
             }
             internalClock = 0f;

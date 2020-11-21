@@ -100,11 +100,11 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2754660115585197043}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 30
   m_Drag: 0
   m_AngularDrag: 15.85
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -116,7 +116,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2754660115585197043}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 14.7
   m_Height: 98
@@ -189,6 +189,8 @@ MonoBehaviour:
   meshResolution: 0.22
   viewMeshFilter: {fileID: 0}
   secs: 0
+  isProvoked: 0
+  isInSight: 0
 --- !u!195 &3097329848688639811
 NavMeshAgent:
   m_ObjectHideFlags: 0

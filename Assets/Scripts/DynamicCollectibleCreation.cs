@@ -71,6 +71,7 @@ public class DynamicCollectibleCreation : MonoBehaviour
             float randomPosZ = Random.Range(0, randomColliderArea.z);
             GameObject collectible = Instantiate(artifact, new Vector3(randomPosX, randomColliderArea.y, randomPosZ), Quaternion.identity);
             collectible.transform.parent = allArtifacts;
+            Debug.Log("Generated Artifact");
         }
 
     }
