@@ -13,7 +13,7 @@ public class Fear : MonoBehaviour
 
     public int dangerWearoffTime = 5;
 
-    private float testTimer = 0f;
+    // private float testTimer = 0f;
     
     public Light flashlight;
 
@@ -69,7 +69,7 @@ public class Fear : MonoBehaviour
 
         } else
         {
-            if (fearTimer % 60 >= 1 && fear > 0)
+            if (fearTimer % 60 >= 3 && fear > 0)
             {
                 fearTimer = 0;
                 fear--;
@@ -89,7 +89,7 @@ public class Fear : MonoBehaviour
         fearText.text = fear + "%";
     }
 
-    void StartFlicker()
+    public void StartFlicker()
     {
         flickering = true;
         float flickerDuration = Random.Range(0.1f, 1f);
