@@ -16,6 +16,9 @@ public class NpcAi : MonoBehaviour
     //[SerializeField] Transform setLocation4;
     [SerializeField] GameObject[] arcadeMachines;
     [SerializeField] GameObject[] walkAroundLocations;
+    [SerializeField] GameObject[] availableTables;
+
+    
 
     NavMeshAgent navMeshAgent;
 
@@ -24,7 +27,7 @@ public class NpcAi : MonoBehaviour
 
     float turnSpeed = 5;
 
-    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
+    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood, pizzaMood, sittingDown};
     bool arcadeAvailable = false;
     bool walkDestinationAvailable = true;
     bool isMoving = true;
@@ -36,6 +39,9 @@ public class NpcAi : MonoBehaviour
     // Time components for walkTimer()
     float timer = 0;
     public int secs;
+
+    //Components for SittingDown
+    int availableTableIndex;
 
     void Start()
     {
@@ -84,8 +90,72 @@ public class NpcAi : MonoBehaviour
                 WalkAroundEstablishment();
                 //StateChangeTimer();
                 break;
+            case MoodSates.pizzaMood:
+                if(!reached)
+                {
+                    GetToTable();
+                }
+                else
+                {
+                    //navMeshAgent.isStopped = true;
+                    GetComponent<Animator>().SetBool("sitting", true);
+                    isMoving = false;
+                    SittingDown();
+                }
+                break;
+            case MoodSates.sittingDown:
+                {
+                    if((availableTableIndex%2)== 0)
+                    {
+                        FaceTargetZpos();
+                        transform.position = transform.position - new Vector3(0, 0, .4f);
+
+                    }
+                    else
+                    {
+                        FaceTargetZneg();
+                        transform.position = transform.position + new Vector3(0, 0, .4f);
+
+                    }
+                    //transform.position = transform.position + new Vector3(0, .2f, 0);
+                    WaitingForService();
+                    break;
+                }
         }
 
+    }
+
+    private void WaitingForService()
+    {
+        GetComponent<Animator>().SetBool("needService", true);
+    }
+
+    private void GetToTable()
+    {
+        GettingATable();
+
+        if (distanceToLocation <= .78)
+        {
+            reached = true;
+        }
+
+    }
+
+    private void GettingATable()
+    {
+
+        System.Random rnd = new System.Random();
+        int i = 0;
+        i = rnd.Next(1, 3);
+        setLocation = availableTables[i].transform;
+        availableTableIndex = i;
+        print(distanceToLocation);
+        navMeshAgent.SetDestination(setLocation.position);
+    }
+
+    private void SittingDown()
+    {
+        state = MoodSates.sittingDown;
     }
 
     private void WalkAroundEstablishment()
@@ -174,7 +244,7 @@ public class NpcAi : MonoBehaviour
     {
         System.Random rnd = new System.Random();
         int num = 0;
-        num = rnd.Next(1, 5);
+        num = rnd.Next(1, 6);
 
         num = forceCase;
         switch (num)
@@ -195,6 +265,9 @@ public class NpcAi : MonoBehaviour
                 //print("Walk Around");
                 state = MoodSates.walkAroundMood;
                 break;
+            case 5:
+                state = MoodSates.pizzaMood;
+                break;
         }
     }
 
@@ -213,7 +286,13 @@ public class NpcAi : MonoBehaviour
     private void FaceTargetZpos()
     {
         Vector3 direction = (setLocation.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z+1));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z+10));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
+    }
+    private void FaceTargetZneg()
+    {
+        Vector3 direction = (setLocation.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z - 10));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
 
