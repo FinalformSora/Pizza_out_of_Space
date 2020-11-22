@@ -60595,11 +60595,14 @@ MonoBehaviour:
   attackInterval: 15
   attackTime: 30
   angryTime: 5
+  angrySpeedMultiplier: 3
   chasing: 0
   feet: {fileID: 1988881780}
   whispers: {fileID: 1327142314}
   scream: {fileID: 8300000, guid: af643650c23cf8b488d9cccbac010bec, type: 3}
   crying: {fileID: 8300000, guid: b57f80e2baa71114cae8a5c590f8b458, type: 3}
+  feetNormal: {fileID: 8300000, guid: aed8d1e1849a02f4f839a52d3035d17e, type: 3}
+  feetRunning: {fileID: 8300000, guid: f3e045f68ca89a442a4510d7819405c4, type: 3}
 --- !u!82 &1322677028
 AudioSource:
   m_ObjectHideFlags: 0
@@ -100981,7 +100984,7 @@ PrefabInstance:
     - target: {fileID: 1909324633619228504, guid: 0f93523dad9b4de4a8ced890094713f6,
         type: 3}
       propertyPath: m_Volume
-      value: 0.6
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1909324633619228504, guid: 0f93523dad9b4de4a8ced890094713f6,
         type: 3}
