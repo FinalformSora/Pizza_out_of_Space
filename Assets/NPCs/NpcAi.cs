@@ -18,14 +18,12 @@ public class NpcAi : MonoBehaviour
     [SerializeField] GameObject[] walkAroundLocations;
     [SerializeField] GameObject[] availableTables;
 
-    
-
     NavMeshAgent navMeshAgent;
 
     float distanceToLocation = Mathf.Infinity;
     float distanceToArcade = Mathf.Infinity;
 
-    float turnSpeed = 5;
+    float turnSpeed = 20;
 
     public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood, pizzaMood, sittingDown};
     bool arcadeAvailable = false;
@@ -41,7 +39,10 @@ public class NpcAi : MonoBehaviour
     public int secs;
 
     //Components for SittingDown
-    int availableTableIndex;
+    public int availableTableIndex = 0;
+    bool goToWoodTable = false;
+    //bool goToSteelTable = false;
+
 
     void Start()
     {
@@ -91,11 +92,15 @@ public class NpcAi : MonoBehaviour
                 //StateChangeTimer();
                 break;
             case MoodSates.pizzaMood:
-                if(!reached)
+                if (goToWoodTable)
                 {
                     GetToTable();
                 }
-                else
+                else if (!goToWoodTable)
+                {
+                    GetToSteelTable();
+                }
+                else if(reached)
                 {
                     //navMeshAgent.isStopped = true;
                     GetComponent<Animator>().SetBool("sitting", true);
@@ -107,15 +112,13 @@ public class NpcAi : MonoBehaviour
                 {
                     if((availableTableIndex%2)== 0)
                     {
-                        FaceTargetZpos();
-                        transform.position = transform.position - new Vector3(0, 0, .4f);
-
+                        FaceTargetZneg();
+                        transform.position = transform.position + new Vector3(0, 0, .4f);
                     }
                     else
                     {
-                        FaceTargetZneg();
-                        transform.position = transform.position + new Vector3(0, 0, .4f);
-
+                        FaceTargetZpos();
+                        transform.position = transform.position - new Vector3(0, 0, .4f);
                     }
                     //transform.position = transform.position + new Vector3(0, .2f, 0);
                     WaitingForService();
@@ -125,6 +128,21 @@ public class NpcAi : MonoBehaviour
 
     }
 
+    private void SelectALocation()
+    {
+        System.Random rnd = new System.Random();
+        int locationTheme = rnd.Next(1, 3);
+        if(locationTheme == 1)
+        {
+            goToWoodTable = true;
+        }
+        else
+        {
+            goToWoodTable = false;
+        }
+    }
+
+   
     private void WaitingForService()
     {
         GetComponent<Animator>().SetBool("needService", true);
@@ -140,19 +158,46 @@ public class NpcAi : MonoBehaviour
         }
 
     }
+    private void GetToSteelTable()
+    {
+        GettingASteelTable();
+
+        if (distanceToLocation <= .78)
+        {
+            reached = true;
+        }
+    }
 
     private void GettingATable()
     {
 
         System.Random rnd = new System.Random();
-        int i = 0;
-        i = rnd.Next(1, 3);
-        setLocation = availableTables[i].transform;
-        availableTableIndex = i;
-        print(distanceToLocation);
+        if (availableTableIndex == 0)
+        {
+            int i = rnd.Next(1, 16);
+            //int i = availableTableIndex;
+            setLocation = availableTables[i].transform;
+            availableTableIndex = i;
+            print(i);
+        }
+        //print(distanceToLocation);
         navMeshAgent.SetDestination(setLocation.position);
     }
+    private void GettingASteelTable()
+    {
 
+        System.Random rnd = new System.Random();
+        if (availableTableIndex == 0)
+        {
+            int i = rnd.Next(1, 16);
+            //int i = availableTableIndex;
+            setLocation = availableTables[i].transform;
+            availableTableIndex = i;
+            print(i);
+        }
+        //print(distanceToLocation);
+        navMeshAgent.SetDestination(setLocation.position);
+    }
     private void SittingDown()
     {
         state = MoodSates.sittingDown;
@@ -266,6 +311,7 @@ public class NpcAi : MonoBehaviour
                 state = MoodSates.walkAroundMood;
                 break;
             case 5:
+                SelectALocation();
                 state = MoodSates.pizzaMood;
                 break;
         }
