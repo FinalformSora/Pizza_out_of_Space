@@ -10,6 +10,8 @@ public class Timer : MonoBehaviour
     [SerializeField] int minute;
     [SerializeField] GameObject sun;
     [SerializeField] Text timer;
+
+    public LockDoors[] doors = new LockDoors[2];
     // Start is called before the first frame update
     void Start()
     {
@@ -27,10 +29,12 @@ public class Timer : MonoBehaviour
         if (time > 360 && time < 1080)
         {
             sun.SetActive(true);
+            lockDoors(doors, true);
         }
         else
         {
             sun.SetActive(false);
+            lockDoors(doors, false);
         }
         if(minute < 10)
         {
@@ -43,4 +47,20 @@ public class Timer : MonoBehaviour
 
         //Debug.Log("Hour: " + hour + "Minutes:" + minute + "time:" + time);
     }
+
+    void lockDoors(LockDoors[] doors, bool locked)
+    {
+        for (int i = 0; i < doors.Length; i++)
+        {
+            if (locked)
+            {
+                doors[i].Lock();
+            } else
+            {
+                doors[i].Unlock();
+            }
+        }
+    }
+
+
 }

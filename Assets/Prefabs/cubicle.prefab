@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8382513050811805530}
   - component: {fileID: 8053586505976441262}
   - component: {fileID: 8400649019095459003}
+  - component: {fileID: 2167553531033974779}
   m_Layer: 0
   m_Name: Cubicle_wood
   m_TagString: Untagged
@@ -79,6 +80,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &2167553531033974779
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1650158726050122178}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6811962338785867283, guid: 9c8d4af24e68ec74782f123e5553b281, type: 3}
 --- !u!1 &3524423766401853167
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +105,7 @@ GameObject:
   - component: {fileID: 817592814521274283}
   - component: {fileID: 222546167130564217}
   - component: {fileID: 1424739946682398881}
+  - component: {fileID: 3215494677770250704}
   m_Layer: 0
   m_Name: Cubicle
   m_TagString: Untagged
@@ -158,6 +174,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &3215494677770250704
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3524423766401853167}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 30945264241753363, guid: 9c8d4af24e68ec74782f123e5553b281, type: 3}
 --- !u!1 &4320218581021104280
 GameObject:
   m_ObjectHideFlags: 0
