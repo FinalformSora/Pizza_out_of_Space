@@ -45,7 +45,13 @@ public class Princess : MonoBehaviour
     public AudioClip feetNormal;
     public AudioClip feetRunning;
 
+    // Controls behavior
     private bool angry;
+    private bool resting;
+
+    // Keeps track of rest time
+    private float restTimer;
+    public float maxRestTime;
 
     private float defaultSpeed;
 
@@ -68,6 +74,7 @@ public class Princess : MonoBehaviour
         mouth = GetComponent<AudioSource>();
 
         angry = false;
+        resting = false;
         angryTimer = 0;
         defaultSpeed = agent.speed;
     }
@@ -95,6 +102,11 @@ public class Princess : MonoBehaviour
                 angryTimer += Time.deltaTime;
             } else
             {
+                if (angry)
+                {
+                    calmDown();
+                }
+                // When she's done being angry
                 angry = false;
                 animator.SetBool("angry", angry);
                 angryTimer = 0;
@@ -102,10 +114,25 @@ public class Princess : MonoBehaviour
                 feet.clip = feetNormal;
             }
 
-            agent.speed = angry ? defaultSpeed * angrySpeedMultiplier: defaultSpeed;
-            agent.acceleration = agent.speed * 10;
-
-            Chase();
+            if (resting)
+            {
+                agent.speed = 0;
+                agent.velocity = Vector3.zero;
+                restTimer += Time.deltaTime;
+                agent.isStopped = true;
+                if (restTimer % 60 >= maxRestTime)
+                {
+                    resting = false;
+                    animator.SetBool("resting", false);
+                    restTimer = 0;
+                    agent.isStopped = false;
+                }
+            } else
+            {
+                Chase();
+                agent.speed = angry ? defaultSpeed * angrySpeedMultiplier : defaultSpeed;
+                agent.acceleration = agent.speed * 10;
+            }
 
             if (attackLengthTimer % 60 >= attackTime)
             {
@@ -117,12 +144,25 @@ public class Princess : MonoBehaviour
             }
 
             attackLengthTimer += Time.deltaTime;
+        } else if (resting)
+        {
+            chasing = false;
+            restTimer += Time.deltaTime;
+            agent.isStopped = true;
+
+            if (restTimer % 60 >= maxRestTime)
+            {
+                resting = false;
+                animator.SetBool("resting", false);
+                restTimer = 0;
+                chasing = true;
+            }
         }
         // Starts the attack
         else if (!chasing && attackTimer % 60 >= attackInterval)
         {
             agent.transform.localScale = scale;
-            distanceMultiplier = 100 - playerFear.fear;
+            distanceMultiplier = 100 - playerFear.fear + 5;
             chasing = true;
             attackTimer = 0;
             NavMeshHit hit;
@@ -132,9 +172,13 @@ public class Princess : MonoBehaviour
             }
         } else
         {
+            // Dissapear after attack time is over.
+            resting = false;
             feet.Stop();
             agent.velocity = Vector3.zero;
             agent.transform.localScale = Vector3.zero;
+            angry = false;
+            attackLengthTimer = 0;
             attackTimer += Time.deltaTime;
         }
 
@@ -144,7 +188,10 @@ public class Princess : MonoBehaviour
     private void Chase()
     {
         agent.SetDestination(pTransform.transform.position);
-        playerFear.invokeFear();
+        if (angry)
+        {
+            playerFear.invokeFear(3f);
+        }
     }
 
     // Teleports behind the player
@@ -155,7 +202,7 @@ public class Princess : MonoBehaviour
 
     public void getAngry()
     {
-        if (!angry)
+        if (!angry && !resting)
         {
             angry = true;
             animator.SetBool("angry", angry);
@@ -165,6 +212,14 @@ public class Princess : MonoBehaviour
             feet.Stop();
             feet.clip = feetRunning;
         }
+    }
+
+    public void calmDown()
+    {
+        resting = true;
+        animator.SetBool("resting", true);
+        feet.Stop();
+        agent.velocity = Vector3.zero;
     }
 
 }

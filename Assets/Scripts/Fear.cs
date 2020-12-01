@@ -29,6 +29,9 @@ public class Fear : MonoBehaviour
 
     private float dangerTimer = 0f;
 
+    public float defaultFearRate = 1f;
+    private float fearRate;
+
     public Text fearText;
 
     // Start is called before the first frame update
@@ -59,9 +62,10 @@ public class Fear : MonoBehaviour
             if (dangerTimer % 60 >= dangerWearoffTime)
             {
                 inDanger = false;
+                fearRate = defaultFearRate;
             }
 
-            if (fearTimer % 30 >= 1 && fear < 100)
+            if (fearTimer % 60/fearRate >= 1 && fear < 100)
             {
                 fearTimer = 0;
                 fear++;
@@ -97,8 +101,9 @@ public class Fear : MonoBehaviour
         StartCoroutine(StopFlicker(flickerDuration));
     }
 
-    public void invokeFear()
+    public void invokeFear(float rate = 1f)
     {
+        fearRate = rate;
         dangerTimer = 0f;
         inDanger = true;
     }
