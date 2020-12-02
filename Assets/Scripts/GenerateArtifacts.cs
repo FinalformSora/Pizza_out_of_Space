@@ -14,6 +14,22 @@ public class GenerateArtifacts : MonoBehaviour
 
     void Start()
     {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void InstantiateRandomPrefab(Vector3 position)
+    {
+
+    }
+
+    public void SpawnArtifacts()
+    {
         parent = this.gameObject.transform;
         children = GetComponentsInChildren<Collider>();
 
@@ -27,16 +43,5 @@ public class GenerateArtifacts : MonoBehaviour
             GameObject go = Instantiate(artifactPrefab, randomCollider.transform.position + randomX, Quaternion.identity);
             go.transform.parent = parent;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void InstantiateRandomPrefab(Vector3 position)
-    {
-
     }
 }

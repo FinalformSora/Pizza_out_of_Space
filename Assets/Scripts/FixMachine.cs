@@ -11,7 +11,8 @@ public class FixMachine : MonoBehaviour
     private float distance = 4f;
     public Text interactText;
     public LayerMask layerMask;
-    private GameObject connectWires;
+    public GameObject connectWires;
+    private Wiretask wireTask;
     private bool interactTextState = false;
     private GameObject player;
     public Text artifactCountText;
@@ -32,9 +33,10 @@ public class FixMachine : MonoBehaviour
         artifactCount = 0;
         playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         interactText.gameObject.SetActive(interactTextState);
-        connectWires = GameObject.FindWithTag("Wires");
         //connectWires.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
+
+        wireTask = connectWires.GetComponent<Wiretask>();
 
         playerManager = GetComponent<PlayerController>();
     }
@@ -59,6 +61,7 @@ public class FixMachine : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E)){
                     connectWires.gameObject.SetActive(true);
+                    wireTask.resetWires();
                     interactTextState = false;
                     player.GetComponent<PlayerController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
