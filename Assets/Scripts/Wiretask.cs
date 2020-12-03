@@ -57,9 +57,6 @@ public class Wiretask : MonoBehaviour
             rightRandom[randomIndex] = temp;
         }
 
-        Debug.Log(leftRandom);
-        Debug.Log(rightRandom);
-
         // Recolors the wires
         for (int i = 0; i < leftWires.Length; i++)
         {
