@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Invintory : MonoBehaviour
+public class Solaire : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

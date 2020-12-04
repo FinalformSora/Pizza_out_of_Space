@@ -14,8 +14,10 @@ public class FixMachine : MonoBehaviour
     public GameObject connectWires;
     private Wiretask wireTask;
     private bool interactTextState = false;
+    private bool inMenu = false;
     private GameObject player;
     public Text artifactCountText;
+    [SerializeField] private GameObject solaireShopMenu;
 
     public AudioSource handsAudio;
 
@@ -35,7 +37,6 @@ public class FixMachine : MonoBehaviour
         artifactCount = 0;
         playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         interactText.gameObject.SetActive(interactTextState);
-        //connectWires.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
 
         wireTask = connectWires.GetComponent<Wiretask>();
@@ -60,15 +61,18 @@ public class FixMachine : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
 
         // Can make this alot cleaner
-        if(Physics.Raycast(ray, out hit, distance, layerMask))
+        if (Physics.Raycast(ray, out hit, distance, layerMask))
         {
             interactTextState = true;
             if (hit.collider.GetComponent<Arcade>())
             {
-                if (Input.GetKeyDown(KeyCode.E)){
+                if (inMenu)
+                    interactTextState = false;
+                if (Input.GetKeyDown(KeyCode.E))
+                {
                     connectWires.gameObject.SetActive(true);
                     wireTask.resetWires();
-                    interactTextState = false;
+                    inMenu = true;
                     player.GetComponent<PlayerController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -114,6 +118,19 @@ public class FixMachine : MonoBehaviour
 
                 }
             }
+            else if (hit.collider.GetComponent<Solaire>())
+            {
+                if (inMenu)
+                    interactTextState = false;
+                if (Input.GetKey(KeyCode.E))
+                {
+                    solaireShopMenu.gameObject.SetActive(true);
+                    inMenu = true;
+                    player.GetComponent<PlayerController>().enabled = false;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+            }
         }
 
         interactText.gameObject.SetActive(interactTextState);
@@ -125,5 +142,9 @@ public class FixMachine : MonoBehaviour
     void updateArtifactCount()
     {
         totalArtifactCount = artifactController.numArtifacts;
+    }
+    public void leaveMenu()
+    {
+        inMenu = false;
     }
 }
