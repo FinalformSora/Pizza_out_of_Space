@@ -33,6 +33,7 @@ public class Princess : MonoBehaviour
     private float distanceMultiplier;
     private Vector3 scale;
     private PlayerController pc;
+    private CodyHealth pc_health;
 
     // Controls mouth audio
     private AudioSource mouth;
@@ -54,6 +55,9 @@ public class Princess : MonoBehaviour
     public float maxRestTime;
 
     private float defaultSpeed;
+    private int layerMask;
+
+    public float sightRange = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -71,17 +75,27 @@ public class Princess : MonoBehaviour
         scale = agent.transform.localScale;
 
         pc = player.GetComponent<PlayerController>();
+        pc_health = player.GetComponent<CodyHealth>();
         mouth = GetComponent<AudioSource>();
 
         angry = false;
         resting = false;
         angryTimer = 0;
         defaultSpeed = agent.speed;
+
+        layerMask = 1 << 8;
+        layerMask = ~layerMask;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (playerFear.fear < 25)
+        {
+            Disable();
+            return;
+        }
+
         moving = agent.velocity != Vector3.zero;
         animator.SetBool("moving", moving);
         if (moving && !feet.isPlaying)
@@ -91,6 +105,7 @@ public class Princess : MonoBehaviour
 
         if (chasing)
         {
+
             if (!mouth.isPlaying && mouth.clip == crying)
                 mouth.Play();
 
@@ -162,7 +177,7 @@ public class Princess : MonoBehaviour
         else if (!chasing && attackTimer % 60 >= attackInterval)
         {
             agent.transform.localScale = scale;
-            distanceMultiplier = 100 - playerFear.fear + 5;
+            distanceMultiplier = 100 - playerFear.fear + 10;
             chasing = true;
             attackTimer = 0;
             NavMeshHit hit;
@@ -173,13 +188,7 @@ public class Princess : MonoBehaviour
         } else
         {
             // Dissapear after attack time is over.
-            resting = false;
-            feet.Stop();
-            agent.velocity = Vector3.zero;
-            agent.transform.localScale = Vector3.zero;
-            angry = false;
-            attackLengthTimer = 0;
-            attackTimer += Time.deltaTime;
+            Disable();
         }
 
         agent.isStopped = !chasing;
@@ -220,6 +229,25 @@ public class Princess : MonoBehaviour
         animator.SetBool("resting", true);
         feet.Stop();
         agent.velocity = Vector3.zero;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other == pc.GetComponent<Collider>())
+        {
+            pc_health.TakeDamage(1f);
+        }
+    }
+
+    private void Disable()
+    {
+        resting = false;
+        feet.Stop();
+        agent.velocity = Vector3.zero;
+        agent.transform.localScale = Vector3.zero;
+        angry = false;
+        attackLengthTimer = 0;
+        attackTimer += Time.deltaTime;
     }
 
 }

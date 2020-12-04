@@ -39,6 +39,8 @@ public class sirenHeadAi : MonoBehaviour
     public bool isProvoked = false;
     public bool isInSight = false;
 
+    public AudioSource sirens;
+
     //Generate Fear Components
     private Fear playerFear;
 
@@ -59,6 +61,10 @@ public class sirenHeadAi : MonoBehaviour
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
         if (isProvoked)
         {
+            if (!sirens.isPlaying)
+            {
+                sirens.Play();
+            }
             EngageTarget();
         }
         else

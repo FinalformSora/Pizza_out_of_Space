@@ -14,8 +14,10 @@ public class FixMachine : MonoBehaviour
     public GameObject connectWires;
     private Wiretask wireTask;
     private bool interactTextState = false;
+    private bool inMenu = false;
     private GameObject player;
     public Text artifactCountText;
+    [SerializeField] private GameObject solaireShopMenu;
 
     public AudioSource handsAudio;
 
@@ -26,6 +28,8 @@ public class FixMachine : MonoBehaviour
     // Progress Bar controller
     public Image progressBar;
     private bool progressBarState = false;
+    private int totalArtifactCount;
+    public GenerateArtifacts artifactController;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +37,15 @@ public class FixMachine : MonoBehaviour
         artifactCount = 0;
         playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         interactText.gameObject.SetActive(interactTextState);
-        //connectWires.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
 
         wireTask = connectWires.GetComponent<Wiretask>();
 
         playerManager = GetComponent<PlayerController>();
+
+        totalArtifactCount = artifactController.numArtifacts;
+
+        artifactCountText.text = artifactCount.ToString() + "/" + totalArtifactCount;
     }
 
     // Update is called once per frame
@@ -54,15 +61,18 @@ public class FixMachine : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * distance, Color.red);
 
         // Can make this alot cleaner
-        if(Physics.Raycast(ray, out hit, distance, layerMask))
+        if (Physics.Raycast(ray, out hit, distance, layerMask))
         {
             interactTextState = true;
             if (hit.collider.GetComponent<Arcade>())
             {
-                if (Input.GetKeyDown(KeyCode.E)){
+                if (inMenu)
+                    interactTextState = false;
+                if (Input.GetKeyDown(KeyCode.E))
+                {
                     connectWires.gameObject.SetActive(true);
                     wireTask.resetWires();
-                    interactTextState = false;
+                    inMenu = true;
                     player.GetComponent<PlayerController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -74,7 +84,7 @@ public class FixMachine : MonoBehaviour
                 {
                     handsAudio.Play();
                     artifactCount++;
-                    artifactCountText.text = artifactCount.ToString();
+                    artifactCountText.text = artifactCount.ToString() + "/" + totalArtifactCount;
                     hit.collider.gameObject.SetActive(false);
                     interactTextState = false;
                 }
@@ -108,11 +118,33 @@ public class FixMachine : MonoBehaviour
 
                 }
             }
+            else if (hit.collider.GetComponent<Solaire>())
+            {
+                if (inMenu)
+                    interactTextState = false;
+                if (Input.GetKey(KeyCode.E))
+                {
+                    solaireShopMenu.gameObject.SetActive(true);
+                    inMenu = true;
+                    player.GetComponent<PlayerController>().enabled = false;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+            }
         }
 
         interactText.gameObject.SetActive(interactTextState);
         progressBar.gameObject.SetActive(progressBarState);
         interactTextState = false;
         progressBarState = false;
+    }
+
+    void updateArtifactCount()
+    {
+        totalArtifactCount = artifactController.numArtifacts;
+    }
+    public void leaveMenu()
+    {
+        inMenu = false;
     }
 }

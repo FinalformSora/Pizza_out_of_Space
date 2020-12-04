@@ -5,7 +5,7 @@ using UnityEngine;
 public class Wiretask : MonoBehaviour
 {
     public PlayerController player;
-    public QuitMiniGame game;
+    public QuitPopMenu game;
 
     public int numWires;
 
@@ -57,9 +57,6 @@ public class Wiretask : MonoBehaviour
             rightRandom[randomIndex] = temp;
         }
 
-        Debug.Log(leftRandom);
-        Debug.Log(rightRandom);
-
         // Recolors the wires
         for (int i = 0; i < leftWires.Length; i++)
         {
@@ -91,6 +88,8 @@ public class Wiretask : MonoBehaviour
                 player.modifyMoney(10);
                 resetWires();
                 game.QuitMini();
+                player.GetComponent<FixMachine>().leaveMenu();
+                this.gameObject.SetActive(false);
             }
 
             yield return new WaitForSeconds(0.5f);
