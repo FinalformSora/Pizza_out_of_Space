@@ -4,11 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Wires
   - Available
   - Unavailable
   - Satisfied
   - Unsatisfied
+  - PopMenu
   layers:
   - Default
   - TransparentFX

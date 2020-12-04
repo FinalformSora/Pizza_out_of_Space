@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private CharacterController player;
     private GameObject eyes;
-    private Light light;
+    private Light flashlight;
+    private Inventory inventory;
 
     public bool lighton = false;
 
@@ -25,6 +26,8 @@ public class PlayerController : MonoBehaviour
     private float jumpHeight = 1.5f;
     private float moveX = 0f;
     private float moveZ = 0f;
+    private float batteryLife = 100.0f;
+     
 
     private float xRotation = 0f;
     private bool jumping = false;
@@ -49,6 +52,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject GameOverCanvas;
     [SerializeField] private bool isPaused = false;
     [SerializeField] public bool isGameOver = false;
+    [SerializeField] private UI_Inventory uiInventory;
+    [SerializeField] private GameObject attractSpray;
+    [SerializeField] private GameObject repelSpray;
+    [SerializeField] private GameObject trapSet;
+    [SerializeField] private GameObject itemSpawn;
+    [SerializeField] private GameObject batteryLifeBar;
 
     void Start()
     {
@@ -57,17 +66,31 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         player = GetComponent<CharacterController>();
         eyes = GameObject.FindWithTag("MainCamera");
-        light = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
-        light.enabled = lighton;
+        flashlight = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Light>();
+        flashlight.enabled = lighton;
 
         // Money
         money = startMoney;
         updateMoneyUI();
+        inventory = new Inventory();
+        uiInventory.SetInventory(inventory);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (lighton && !isPaused)
+        {
+            batteryLife -= Time.deltaTime;
+            if(batteryLife <= 0)
+            {
+                flashlightAudio.Play();
+                lighton = false;
+                flashlight.enabled = lighton;
+                batteryLife = 0.0f;
+            }
+            batteryLifeBar.transform.localScale = new Vector3(batteryLife / 100f, 1, 1);
+        }
         if (slowed == false)
         {
             WalkNormal();
@@ -93,6 +116,16 @@ public class PlayerController : MonoBehaviour
         else if (isGameOver)
         {
             HandleDeath();
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            int i = uiInventory.index % inventory.GetItemList().Count;
+            if (inventory.GetItemList()[i].amount > 0)
+            {
+                inventory.GetItemList()[i].amount--;
+                useItem(inventory.GetItemList()[i]);
+            }
         }
     }
 
@@ -138,11 +171,11 @@ public class PlayerController : MonoBehaviour
         }
         player.Move(new Vector3(move.x * moveSpeed, velocity.y, move.z * moveSpeed) * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && batteryLife > 0)
         {
             flashlightAudio.Play();
             lighton = !lighton;
-            light.enabled = lighton;
+            flashlight.enabled = lighton;
         }
 
         if (Input.GetKey(KeyCode.LeftShift) && walking)
@@ -204,5 +237,76 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         GameOverCanvas.SetActive(true);
+    }
+
+    public void addAttract()
+    {
+        if (money >= 10)
+        {
+            Item item = new Item { itemType = Item.ItemType.Attract };
+            inventory.AddItem(item);
+            modifyMoney(-10);
+        }
+    }
+
+    public void addRepel()
+    {
+        if (money >= 10)
+        {
+            Item item = new Item { itemType = Item.ItemType.Repel };
+            inventory.AddItem(item);
+            modifyMoney(-10);
+        }
+    }
+    public void addTrap()
+    {
+        if (money >= 20)
+        {
+            Item item = new Item { itemType = Item.ItemType.Trap };
+            inventory.AddItem(item);
+            modifyMoney(-20);
+        }
+    }
+    public void addBattery()
+    {
+        if (money >= 5)
+        {
+            Item item = new Item { itemType = Item.ItemType.Battery };
+            inventory.AddItem(item);
+            modifyMoney(-5);
+        }
+    }
+
+    private void useItem(Item x)
+    {
+        switch (x.itemType)
+        {
+            case Item.ItemType.Attract: useAttract(); break;
+            case Item.ItemType.Repel: useRepel();  break;
+            case Item.ItemType.Trap: useTrap(); break;
+            case Item.ItemType.Battery: useBattery();  break;
+        }
+    }
+
+    private void useAttract()
+    {
+        Instantiate(attractSpray, new Vector3(itemSpawn.transform.position.x, 
+            itemSpawn.transform.position.y, itemSpawn.transform.position.z), Quaternion.identity);
+    }
+    private void useRepel()
+    {
+        Instantiate(repelSpray, new Vector3(itemSpawn.transform.position.x,
+            itemSpawn.transform.position.y, itemSpawn.transform.position.z), Quaternion.identity);
+    }
+    private void useTrap()
+    {
+        Instantiate(trapSet, new Vector3(itemSpawn.transform.position.x,
+            itemSpawn.transform.position.y, itemSpawn.transform.position.z), Quaternion.identity);
+    }
+    private void useBattery()
+    {
+        batteryLife += 50.0f;
+        if (batteryLife > 100.0f)
+            batteryLife = 100.0f;
     }
 }

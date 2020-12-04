@@ -14,8 +14,10 @@ public class FixMachine : MonoBehaviour
     public GameObject connectWires;
     private Wiretask wireTask;
     private bool interactTextState = false;
+    private bool inMenu = false;
     private GameObject player;
     public Text artifactCountText;
+    [SerializeField] private GameObject solaireShopMenu;
 
     public AudioSource handsAudio;
 
@@ -33,7 +35,6 @@ public class FixMachine : MonoBehaviour
         artifactCount = 0;
         playerCam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         interactText.gameObject.SetActive(interactTextState);
-        //connectWires.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
 
         wireTask = connectWires.GetComponent<Wiretask>();
@@ -59,10 +60,12 @@ public class FixMachine : MonoBehaviour
             interactTextState = true;
             if (hit.collider.GetComponent<Arcade>())
             {
+                if(inMenu)
+                    interactTextState = false;
                 if (Input.GetKeyDown(KeyCode.E)){
                     connectWires.gameObject.SetActive(true);
                     wireTask.resetWires();
-                    interactTextState = false;
+                    inMenu = true;
                     player.GetComponent<PlayerController>().enabled = false;
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
@@ -108,11 +111,29 @@ public class FixMachine : MonoBehaviour
 
                 }
             }
+            else if (hit.collider.GetComponent<Solaire>())
+            {
+                if(inMenu)
+                    interactTextState = false;
+                if (Input.GetKey(KeyCode.E))
+                {
+                    solaireShopMenu.gameObject.SetActive(true);
+                    inMenu = true;
+                    player.GetComponent<PlayerController>().enabled = false;
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+            }
         }
 
         interactText.gameObject.SetActive(interactTextState);
         progressBar.gameObject.SetActive(progressBarState);
         interactTextState = false;
         progressBarState = false;
+    }
+
+    public void leaveMenu()
+    {
+        inMenu = false;
     }
 }

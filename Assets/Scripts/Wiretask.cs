@@ -5,7 +5,7 @@ using UnityEngine;
 public class Wiretask : MonoBehaviour
 {
     public PlayerController player;
-    public QuitMiniGame game;
+    public QuitPopMenu game;
 
     public int numWires;
 
