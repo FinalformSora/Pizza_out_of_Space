@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public bool slowed = false;
 
     public AudioSource flashlightAudio;
+    public AudioSource moneySound;
 
     // Keeps track of money
     public int startMoney = 50;
@@ -166,6 +167,7 @@ public class PlayerController : MonoBehaviour
     public void modifyMoney(int amount)
     {
         money += amount;
+        moneySound.Play();
         updateMoneyUI();
     }
 

@@ -54,6 +54,9 @@ public class Princess : MonoBehaviour
     public float maxRestTime;
 
     private float defaultSpeed;
+    private int layerMask;
+
+    public float sightRange = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +80,9 @@ public class Princess : MonoBehaviour
         resting = false;
         angryTimer = 0;
         defaultSpeed = agent.speed;
+
+        layerMask = 1 << 8;
+        layerMask = ~layerMask;
     }
 
     // Update is called once per frame
@@ -91,6 +97,7 @@ public class Princess : MonoBehaviour
 
         if (chasing)
         {
+
             if (!mouth.isPlaying && mouth.clip == crying)
                 mouth.Play();
 
@@ -162,7 +169,7 @@ public class Princess : MonoBehaviour
         else if (!chasing && attackTimer % 60 >= attackInterval)
         {
             agent.transform.localScale = scale;
-            distanceMultiplier = 100 - playerFear.fear + 5;
+            distanceMultiplier = 100 - playerFear.fear + 10;
             chasing = true;
             attackTimer = 0;
             NavMeshHit hit;
@@ -220,6 +227,11 @@ public class Princess : MonoBehaviour
         animator.SetBool("resting", true);
         feet.Stop();
         agent.velocity = Vector3.zero;
+    }
+
+    private void Attack()
+    {
+
     }
 
 }

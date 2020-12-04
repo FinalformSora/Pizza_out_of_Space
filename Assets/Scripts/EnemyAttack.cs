@@ -11,6 +11,7 @@ public class EnemyAttack : MonoBehaviour
     KlownAi enemyAi;
     sirenHeadAi sAi;
     PlayerController pc;
+
     void Start()
     {
         enemyAi = FindObjectOfType<KlownAi>();
