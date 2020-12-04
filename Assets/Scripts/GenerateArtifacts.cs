@@ -14,7 +14,7 @@ public class GenerateArtifacts : MonoBehaviour
 
     void Start()
     {
-
+        SpawnArtifacts();
     }
 
     // Update is called once per frame
@@ -30,6 +30,7 @@ public class GenerateArtifacts : MonoBehaviour
 
     public void SpawnArtifacts()
     {
+
         parent = this.gameObject.transform;
         children = GetComponentsInChildren<Collider>();
 

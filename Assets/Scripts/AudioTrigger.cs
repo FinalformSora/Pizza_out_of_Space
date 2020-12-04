@@ -6,6 +6,7 @@ public class AudioTrigger : MonoBehaviour
 {
     public AudioSource topFloorAudio;
     public AudioSource bottomFloorAudio;
+    public AudioSource arcadeAudio;
     public PlayerController pc;
 
     private bool playerOnBottomFloor = false;
@@ -43,5 +44,6 @@ public class AudioTrigger : MonoBehaviour
     {
         bottomFloorAudio.enabled = playerOnBottomFloor;
         topFloorAudio.enabled = !playerOnBottomFloor;
+        arcadeAudio.enabled = !playerOnBottomFloor;
     }
 }

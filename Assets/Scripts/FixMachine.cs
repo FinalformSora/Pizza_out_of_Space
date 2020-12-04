@@ -26,6 +26,8 @@ public class FixMachine : MonoBehaviour
     // Progress Bar controller
     public Image progressBar;
     private bool progressBarState = false;
+    private int totalArtifactCount;
+    public GenerateArtifacts artifactController;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +41,10 @@ public class FixMachine : MonoBehaviour
         wireTask = connectWires.GetComponent<Wiretask>();
 
         playerManager = GetComponent<PlayerController>();
+
+        totalArtifactCount = artifactController.numArtifacts;
+
+        artifactCountText.text = artifactCount.ToString() + "/" + totalArtifactCount;
     }
 
     // Update is called once per frame
@@ -74,7 +80,7 @@ public class FixMachine : MonoBehaviour
                 {
                     handsAudio.Play();
                     artifactCount++;
-                    artifactCountText.text = artifactCount.ToString();
+                    artifactCountText.text = artifactCount.ToString() + "/" + totalArtifactCount;
                     hit.collider.gameObject.SetActive(false);
                     interactTextState = false;
                 }
@@ -114,5 +120,10 @@ public class FixMachine : MonoBehaviour
         progressBar.gameObject.SetActive(progressBarState);
         interactTextState = false;
         progressBarState = false;
+    }
+
+    void updateArtifactCount()
+    {
+        totalArtifactCount = artifactController.numArtifacts;
     }
 }
