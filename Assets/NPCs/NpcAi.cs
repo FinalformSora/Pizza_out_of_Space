@@ -17,6 +17,7 @@ public class NpcAi : MonoBehaviour
     [SerializeField] GameObject[] arcadeMachines;
     [SerializeField] GameObject[] walkAroundLocations;
     [SerializeField] GameObject[] availableTables;
+    [SerializeField] GameObject[] steelTables;
 
     NavMeshAgent navMeshAgent;
 
@@ -92,13 +93,16 @@ public class NpcAi : MonoBehaviour
                 //StateChangeTimer();
                 break;
             case MoodSates.pizzaMood:
-                if (goToWoodTable)
+                if (!reached)
                 {
-                    GetToTable();
-                }
-                else if (!goToWoodTable)
-                {
-                    GetToSteelTable();
+                   if(goToWoodTable)
+                    {
+                        GetToTable();
+                    }
+                    else if (!goToWoodTable)
+                    {
+                        GetToSteelTable();
+                    }
                 }
                 else if(reached)
                 {
@@ -113,12 +117,12 @@ public class NpcAi : MonoBehaviour
                     if((availableTableIndex%2)== 0)
                     {
                         FaceTargetZneg();
-                        transform.position = transform.position + new Vector3(0, 0, .4f);
+                        transform.position = transform.position + new Vector3(0, 0, .1f);
                     }
                     else
                     {
                         FaceTargetZpos();
-                        transform.position = transform.position - new Vector3(0, 0, .4f);
+                        transform.position = transform.position - new Vector3(0, 0, .1f);
                     }
                     //transform.position = transform.position + new Vector3(0, .2f, 0);
                     WaitingForService();
@@ -131,9 +135,10 @@ public class NpcAi : MonoBehaviour
     private void SelectALocation()
     {
         System.Random rnd = new System.Random();
-        int locationTheme = rnd.Next(1, 3);
+        int locationTheme = rnd.Next(2, 3);
         if(locationTheme == 1)
         {
+            print("Going wood");
             goToWoodTable = true;
         }
         else
@@ -155,6 +160,7 @@ public class NpcAi : MonoBehaviour
         if (distanceToLocation <= .78)
         {
             reached = true;
+            gameObject.tag = "Unsatisfied";
         }
 
     }
@@ -165,16 +171,16 @@ public class NpcAi : MonoBehaviour
         if (distanceToLocation <= .78)
         {
             reached = true;
+            gameObject.tag = "Unsatisfied";
         }
     }
 
     private void GettingATable()
     {
-
         System.Random rnd = new System.Random();
         if (availableTableIndex == 0)
         {
-            int i = rnd.Next(1, 16);
+            int i = rnd.Next(1, 2);
             //int i = availableTableIndex;
             setLocation = availableTables[i].transform;
             availableTableIndex = i;
@@ -189,9 +195,9 @@ public class NpcAi : MonoBehaviour
         System.Random rnd = new System.Random();
         if (availableTableIndex == 0)
         {
-            int i = rnd.Next(1, 16);
+            int i = rnd.Next(1, steelTables.Length);
             //int i = availableTableIndex;
-            setLocation = availableTables[i].transform;
+            setLocation = steelTables[i].transform;
             availableTableIndex = i;
             print(i);
         }
@@ -356,7 +362,7 @@ public class NpcAi : MonoBehaviour
 
     private bool HasReachedWalkedAroundLocation()
     {
-        if (distanceToLocation < .43)
+        if (distanceToLocation < .46)
         {
             walkDestinationAvailable = true;
             tag = "Unsatisfied";
@@ -372,6 +378,11 @@ public class NpcAi : MonoBehaviour
     private void ForceWalkAroundMood()
     {
         state = MoodSates.walkAroundMood;
+        reached = false;
+        availableTableIndex = 0;
+        GetComponent<Animator>().SetBool("sitting", false);
+        GetComponent<Animator>().SetBool("needService", false);
+
     }
 
     private void StateChangeTimer()
