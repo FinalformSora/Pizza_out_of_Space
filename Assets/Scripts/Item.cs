@@ -11,6 +11,7 @@ public class Item
         Repel,
         Battery,
         Trap,
+        Pizza
     }
 
     public ItemType itemType;
@@ -26,6 +27,7 @@ public class Item
             case ItemType.Repel: return ItemAssets.Instance.RepelSprite;
             case ItemType.Battery: return ItemAssets.Instance.BatterySprite;
             case ItemType.Trap: return ItemAssets.Instance.TrapSprite;
+            case ItemType.Pizza: return ItemAssets.Instance.PizzaSprite;
         }
     }
 }

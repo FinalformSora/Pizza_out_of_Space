@@ -277,6 +277,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void addPizza()
+    {
+        Item item = new Item { itemType = Item.ItemType.Pizza };
+        inventory.AddItem(item);
+    }
+
     private void useItem(Item x)
     {
         switch (x.itemType)
@@ -308,5 +314,6 @@ public class PlayerController : MonoBehaviour
         batteryLife += 50.0f;
         if (batteryLife > 100.0f)
             batteryLife = 100.0f;
+        batteryLifeBar.transform.localScale = new Vector3(batteryLife / 100f, 1, 1);
     }
 }

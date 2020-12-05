@@ -22,7 +22,7 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
+        time += Time.deltaTime * 2;
         time %= 1440;
         hour = (int)time / 60;
         minute = (int)time % 60;

@@ -14,6 +14,7 @@ public class Inventory
         AddItem(new Item { itemType = Item.ItemType.Attract, amount = 0, cost = 10 });
         AddItem(new Item { itemType = Item.ItemType.Trap, amount = 0, cost = 20 });
         AddItem(new Item { itemType = Item.ItemType.Battery, amount = 0, cost = 5 });
+        AddItem(new Item { itemType = Item.ItemType.Pizza, amount = 0, cost = 0 });
     }
 
     public void AddItem(Item item)
