@@ -8,15 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainMenu.unity
     guid: 6a216bb86360e124da30046a0912c689
   - enabled: 1
     path: Assets/Scenes/Level.unity
     guid: 346bacdb74351a249830232d6179beab
-  - enabled: 1
-    path: Assets/Scenes/New Jesus.unity
-    guid: d3f37793d9c8bca4b8e04a86bb0c1357
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
