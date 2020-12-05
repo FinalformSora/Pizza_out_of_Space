@@ -26,7 +26,7 @@ public class NpcAi : MonoBehaviour
 
     float turnSpeed = 20;
 
-    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood, pizzaMood, sittingDown};
+    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood, pizzaMood, sittingDown, waitingForService};
     bool arcadeAvailable = false;
     bool walkDestinationAvailable = true;
     bool isMoving = true;
@@ -36,13 +36,14 @@ public class NpcAi : MonoBehaviour
 
     public MoodSates state;
     // Time components for walkTimer()
-    float timer = 0;
-    public int secs;
+    float minutes = 60;
 
     //Components for SittingDown
     public int availableTableIndex = 0;
     bool goToWoodTable = false;
     //bool goToSteelTable = false;
+
+    
 
 
     void Start()
@@ -128,6 +129,22 @@ public class NpcAi : MonoBehaviour
                     WaitingForService();
                     break;
                 }
+            case MoodSates.waitingForService:
+                {
+                    if ((availableTableIndex % 2) == 0)
+                    {
+                        FaceTargetZneg();
+                    }
+                    else
+                    {
+                        FaceTargetZpos();
+                    }
+                    if (gameObject.tag == "Satisfied")
+                    {
+
+                    }
+                    break;
+                }
         }
 
     }
@@ -151,6 +168,7 @@ public class NpcAi : MonoBehaviour
     private void WaitingForService()
     {
         GetComponent<Animator>().SetBool("needService", true);
+        state = MoodSates.waitingForService;
     }
 
     private void GetToTable()
@@ -180,7 +198,7 @@ public class NpcAi : MonoBehaviour
         System.Random rnd = new System.Random();
         if (availableTableIndex == 0)
         {
-            int i = rnd.Next(1, 2);
+            int i = rnd.Next(1, availableTables.Length);
             //int i = availableTableIndex;
             setLocation = availableTables[i].transform;
             availableTableIndex = i;
@@ -389,20 +407,34 @@ public class NpcAi : MonoBehaviour
     {
         System.Random rnd = new System.Random();
         int num = 0;
-        num = rnd.Next(2, 4);
+        num = rnd.Next(1, 4);
 
-        timer += Time.deltaTime;
-        secs = (int)(timer % 60);
-        int finalWalkTime = secs * num;
-        Debug.Log("Timer " + secs);
-
-        if (secs >= finalWalkTime)
+        switch(num)
         {
-            timer = 0;
-            GettingState();
+            case 1:
+                minutes = 60;
+                break;
+            case 2:
+                minutes = 120;
+                break;
+            case 3:
+                minutes = 300;
+                break;
         }
 
-    }
+        minutes -= Time.deltaTime;
+            /* timer += Time.deltaTime;
+             secs = (int)(timer % 60);
+             int finalWalkTime = secs * num;
+             Debug.Log("Timer " + secs);
+
+             if (secs >= finalWalkTime)
+             {
+                 timer = 0;
+                 GettingState();
+             }*/
+
+        }
 
     private void FrontDeskLineMaker()
     {
