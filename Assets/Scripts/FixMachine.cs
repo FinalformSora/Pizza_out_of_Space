@@ -110,6 +110,28 @@ public class FixMachine : MonoBehaviour
 
                     if (pizzaMaker.progress % 60 >= pizzaMaker.taskTime)
                     {
+                        //playerManager.modifyMoney(pizzaMaker.bounty);
+                        //pizzaMaker.finishPizza();
+                        pizzaMaker.progress = 0;
+                        this.gameObject.GetComponent<PlayerController>().addPizza();
+                        interactTextState = false;
+                        progressBarState = false;
+                    }
+
+                }
+            }
+            else if (hit.collider.GetComponent<PizzaDeleter>())
+            {
+                PizzaDeleter pizzaMaker = hit.collider.GetComponent<PizzaDeleter>();
+                progressBarState = true;
+                progressBar.fillAmount = (pizzaMaker.progress % 60) / pizzaMaker.taskTime;
+                print("Destry");
+                if (Input.GetKey(KeyCode.E))
+                {
+                    pizzaMaker.makePizza();
+
+                    if (pizzaMaker.progress % 60 >= pizzaMaker.taskTime)
+                    {
                         playerManager.modifyMoney(pizzaMaker.bounty);
                         pizzaMaker.finishPizza();
                         this.gameObject.GetComponent<PlayerController>().addPizza();

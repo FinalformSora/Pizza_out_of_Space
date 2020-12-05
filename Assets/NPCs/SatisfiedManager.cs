@@ -28,7 +28,7 @@ public class SatisfiedManager : MonoBehaviour
             if (Input.GetKey(KeyCode.Mouse0) && hit.collider.gameObject.tag == "Unsatisfied" )
             {
                 hit.collider.gameObject.tag = "Satisfied";
-                hit.collider.gameObject.SendMessage("ForceWalkAroundMood");
+                //hit.collider.gameObject.SendMessage("ForceWalkAroundMood");
                 print(hit.collider.gameObject.name + " has been clicked!");
             }
         }

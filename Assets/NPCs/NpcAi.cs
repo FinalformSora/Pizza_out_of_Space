@@ -18,6 +18,8 @@ public class NpcAi : MonoBehaviour
     [SerializeField] GameObject[] walkAroundLocations;
     [SerializeField] GameObject[] availableTables;
     [SerializeField] GameObject[] steelTables;
+    [SerializeField] Transform pizza;
+    [SerializeField] Transform pizzaSpaner;
 
     NavMeshAgent navMeshAgent;
 
@@ -36,15 +38,13 @@ public class NpcAi : MonoBehaviour
 
     public MoodSates state;
     // Time components for walkTimer()
-    float minutes = 60;
+    float minutes = 5;
 
     //Components for SittingDown
     public int availableTableIndex = 0;
     bool goToWoodTable = false;
+    float pizzaCounter = 0;
     //bool goToSteelTable = false;
-
-    
-
 
     void Start()
     {
@@ -131,17 +131,37 @@ public class NpcAi : MonoBehaviour
                 }
             case MoodSates.waitingForService:
                 {
-                    if ((availableTableIndex % 2) == 0)
+                    /*if ((availableTableIndex % 2) == 0)
                     {
                         FaceTargetZneg();
                     }
                     else
                     {
                         FaceTargetZpos();
-                    }
+                    }*/
                     if (gameObject.tag == "Satisfied")
                     {
+                        //Quaternion lookRotation = Quaternion.LookRotation(new Vector3(pizza.x - 1, 0, direction.z));
+                        if (pizzaCounter == 0)
+                        {
+                            Quaternion spawnRotation = Quaternion.Euler(0, 0, 90);
+                            Transform newPizza = PizzaDeleter.Instantiate(pizza, pizzaSpaner.position, spawnRotation);
+                            newPizza.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
+                            pizzaCounter = 1;
+                     
+                        }
+                        if(pizzaCounter == 1)
+                        {
+                            minutes -= Time.deltaTime;
+                            if(minutes <= 0)
+                            {
+                                ForceWalkAroundMood();
+                                pizzaCounter = 0;
+                                minutes = 60;
+                            }
 
+
+                        }
                     }
                     break;
                 }
@@ -303,7 +323,7 @@ public class NpcAi : MonoBehaviour
     {
         if (HasReachedLocation())
         {
-            print("NPC got here");
+            //print("NPC got here");
             isMoving = false;
         }
     }
