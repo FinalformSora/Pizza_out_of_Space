@@ -15,7 +15,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        time = 360f;
+        time = 1080f;
         sun = GameObject.Find("Sun");
     }
 

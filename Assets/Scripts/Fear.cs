@@ -68,7 +68,7 @@ public class Fear : MonoBehaviour
             if (fearTimer % 60/fearRate >= 1 && fear < 100)
             {
                 fearTimer = 0;
-                fear++;
+                fear += 3;
             }
 
         } else
