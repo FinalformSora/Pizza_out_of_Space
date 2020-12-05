@@ -112,6 +112,7 @@ public class FixMachine : MonoBehaviour
                     {
                         playerManager.modifyMoney(pizzaMaker.bounty);
                         pizzaMaker.finishPizza();
+                        this.gameObject.GetComponent<PlayerController>().addPizza();
                         interactTextState = false;
                         progressBarState = false;
                     }
