@@ -22576,7 +22576,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 33675cfc920d4b44e997cd2427b161ee,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4246033775202154418, guid: 33675cfc920d4b44e997cd2427b161ee,
         type: 3}
@@ -109774,6 +109774,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 768522830803600572, guid: a5d82ee922cd46c4b9d043a5f99ab518,
+        type: 3}
+      propertyPath: taskTime
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3691192074289479150, guid: a5d82ee922cd46c4b9d043a5f99ab518,
         type: 3}
       propertyPath: m_Name
