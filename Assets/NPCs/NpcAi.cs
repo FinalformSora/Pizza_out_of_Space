@@ -83,6 +83,10 @@ public class NpcAi : MonoBehaviour
                 {
                     SetIdleUponDestination(distanceToLocation);
                 }
+                else
+                {
+                    HasReachedLocation();
+                }
                 FaceTargetXneg();
                 break;
             case MoodSates.arcadeGameMood:

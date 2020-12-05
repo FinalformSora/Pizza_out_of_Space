@@ -11811,6 +11811,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4abceb9de10a65345befdc594ae8453b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4abceb9de10a65345befdc594ae8453b, type: 3}
 --- !u!4 &255997476 stripped
@@ -20618,7 +20623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3463173e3c1ba49a4b2ae2cf43bef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 0
+  time: 700
   hour: 0
   minute: 0
   sun: {fileID: 2129142725}
@@ -20662,7 +20667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4514486541cc14395af0e8c2f6f6e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fear: 0
+  fear: 55
   maxFear: 100
   lowestFlickerInterval: 5
   dangerWearoffTime: 5
@@ -38668,6 +38673,10 @@ PrefabInstance:
       propertyPath: pizzaSpaner
       value: 
       objectReference: {fileID: 532032116}
+    - target: {fileID: 146599999, guid: 3c4c579eb4d0a464eb8a066539559033, type: 3}
+      propertyPath: forceCase
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 146600000, guid: 3c4c579eb4d0a464eb8a066539559033, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -64472,6 +64481,11 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4abceb9de10a65345befdc594ae8453b,
         type: 3}
       propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4abceb9de10a65345befdc594ae8453b,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
