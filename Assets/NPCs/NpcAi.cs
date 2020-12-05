@@ -176,7 +176,7 @@ public class NpcAi : MonoBehaviour
     private void SelectALocation()
     {
         System.Random rnd = new System.Random();
-        int locationTheme = rnd.Next(2, 3);
+        int locationTheme = rnd.Next(1, 2);
         if(locationTheme == 1)
         {
             print("Going wood");
