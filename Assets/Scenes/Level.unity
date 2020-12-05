@@ -116562,6 +116562,11 @@ PrefabInstance:
       propertyPath: captureRange
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5024842962314097204, guid: fe6e91dacd31e30448722893107628ab,
+        type: 3}
+      propertyPath: chaseRange
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5024842963690350163, guid: fe6e91dacd31e30448722893107628ab,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -116625,7 +116630,7 @@ PrefabInstance:
     - target: {fileID: 5024842963690350172, guid: fe6e91dacd31e30448722893107628ab,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe6e91dacd31e30448722893107628ab, type: 3}
