@@ -9,6 +9,7 @@ TagManager:
   - Satisfied
   - Unsatisfied
   - PopMenu
+  - Wires
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - Interactions
   - Player
   - Enemy
-  - 
-  - 
+  - Steel
+  - Wood
   - 
   - 
   - 
