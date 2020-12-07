@@ -391,7 +391,6 @@ public class NpcAi : MonoBehaviour
 
     private void GettingState()
     {
-        print("Here agaon");
         System.Random rnd = new System.Random();
         int num = 0;
         num = rnd.Next(1, 6);
@@ -400,7 +399,6 @@ public class NpcAi : MonoBehaviour
         arcadeAvailable = true;
 
         num = forceCase;
-        print(num);
         switch (num)
         {
             case 1:
