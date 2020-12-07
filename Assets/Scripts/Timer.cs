@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class Timer : MonoBehaviour
     [SerializeField] int minute;
     [SerializeField] GameObject sun;
     [SerializeField] Text timer;
+    [SerializeField] bool night = false;
+    [SerializeField] GameObject solaire;
 
     public LockDoors[] doors = new LockDoors[2];
     // Start is called before the first frame update
     void Start()
     {
-        time = 1080f;
+        time = 1070f;
         sun = GameObject.Find("Sun");
     }
 
@@ -30,11 +33,17 @@ public class Timer : MonoBehaviour
         {
             sun.SetActive(true);
             lockDoors(doors, true);
+            if (night)
+            {
+                checkWinCondition();
+            }
         }
         else
         {
             sun.SetActive(false);
             lockDoors(doors, false);
+            night = true;
+            solaire.SetActive(true);
         }
         if(minute < 10)
         {
@@ -62,5 +71,26 @@ public class Timer : MonoBehaviour
         }
     }
 
+    void checkWinCondition()
+    {
+        int artifactsCollected = gameObject.GetComponent<FixMachine>().artifactCount;
+        if(artifactsCollected == 10)
+        {
+            winGame();
+        }
+        else
+        {
+            loseGame();
+        }
+    }
 
+    void winGame()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    void loseGame()
+    {
+
+    }
 }

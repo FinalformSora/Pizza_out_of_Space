@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1295072384653845683}
   - component: {fileID: 618160290266392019}
   - component: {fileID: -6681970885413929797}
-  - component: {fileID: 3745131033869386708}
+  - component: {fileID: 6538495625800531722}
   m_Layer: 0
   m_Name: Attract
   m_TagString: Untagged
@@ -94,7 +94,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 17.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &-6681970885413929797
 Rigidbody:
@@ -112,7 +112,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &3745131033869386708
+--- !u!114 &6538495625800531722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,9 +121,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7764145786529986297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d7579663169d2246bfa16fe608c2bd9, type: 3}
+  m_Script: {fileID: 11500000, guid: f98123a11d0f22f4faa4487394bd4f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1909324633619228451, guid: 0f93523dad9b4de4a8ced890094713f6, type: 3}
+  attractRange: 15
 --- !u!1001 &3029381491744997753
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -181,15 +183,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 1
+      value: 0.99607843
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.2688679
+      value: 0.72156864
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.5594309
+      value: 0.7764706
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 5a97962f7d5ba4df0823334b52c7c02c, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime1

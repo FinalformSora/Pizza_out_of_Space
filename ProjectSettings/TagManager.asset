@@ -9,6 +9,8 @@ TagManager:
   - Satisfied
   - Unsatisfied
   - PopMenu
+  - Wires
+  - Monster
   layers:
   - Default
   - TransparentFX

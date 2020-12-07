@@ -20,7 +20,11 @@ public class Peanut : MonoBehaviour
     public AudioClip audioClip;
     private AudioSource audioSource;
 
+    public bool attracted = false;
+    public bool repelled = false;
+
     [SerializeField] float damage = 40f;
+    [SerializeField] Transform hold;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +41,12 @@ public class Peanut : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(target == null)
+        {
+            target = hold;
+            attracted = false;
+            repelled = false;
+        }
 
         Vector3 screenPoint = eyes.WorldToViewportPoint(target.position);
         seesPlayer = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
@@ -49,13 +59,22 @@ public class Peanut : MonoBehaviour
         } else
         {
             agent.isStopped = false;
-            if (seesPlayer)
+            if (attracted)
+            {
+                agent.SetDestination(target.position);
+            }
+            else if (repelled)
+            {
+                agent.isStopped = true;
+            }
+            else if (seesPlayer)
             {
                 RaycastHit hit;
                 Debug.DrawRay(eyes.transform.position, target.position - eyes.transform.position, Color.red);
 
                 if (Physics.Raycast(eyes.transform.position, target.position - eyes.transform.position, out hit, sightRange, layerMask))
                 {
+                    
                     if (hit.collider.GetComponent<PlayerController>())
                     {
                         if (hit.distance < 2f)

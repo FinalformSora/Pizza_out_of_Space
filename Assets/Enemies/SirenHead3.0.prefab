@@ -717,6 +717,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   slowSpeed: 0
+--- !u!114 &3924568895744683898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836612656580724792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a16bb6f466a75ab419af95f8795befd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8708275280899068448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1041,6 +1053,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 53282883efb1c7344b7d5481f0ddd0de,
+        type: 3}
+      propertyPath: m_TagString
+      value: Monster
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53282883efb1c7344b7d5481f0ddd0de, type: 3}

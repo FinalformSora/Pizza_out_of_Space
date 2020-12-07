@@ -44,6 +44,7 @@ MonoBehaviour:
   chaseRange: 15
   turnSpeed: 5
   captureRange: 2
+  distanceToTarget: Infinity
 --- !u!195 &8666758848587168453
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -66,6 +67,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1509531407307024662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8396937938032410513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8798c69fdd9cdf409e795e8b9991e7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8666758849429696172
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,7 +90,7 @@ GameObject:
   - component: {fileID: 8666758849429696163}
   m_Layer: 0
   m_Name: EnemyLocations
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

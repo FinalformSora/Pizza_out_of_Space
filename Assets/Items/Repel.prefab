@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 262058153161201200}
   - component: {fileID: 6485512545958697402}
   - component: {fileID: -7367621453441477817}
-  - component: {fileID: 4031241543744912062}
+  - component: {fileID: -1642567858646353398}
   m_Layer: 0
   m_Name: Repel
   m_TagString: Untagged
@@ -112,7 +112,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &4031241543744912062
+--- !u!114 &-1642567858646353398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,9 +121,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8715943950482772746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d7579663169d2246bfa16fe608c2bd9, type: 3}
+  m_Script: {fileID: 11500000, guid: 616350b2e2799a849a88defd151f61a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  repelRange: 15
 --- !u!1001 &9073157200476842750
 PrefabInstance:
   m_ObjectHideFlags: 0

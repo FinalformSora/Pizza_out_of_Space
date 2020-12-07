@@ -5,12 +5,13 @@ using UnityEngine.AI;
 
 public class Princess : MonoBehaviour
 {
+    [SerializeField] Transform hold;
 
     public GameObject player;
     public NavMeshAgent agent;
     public Animator animator;
 
-    private Transform pTransform;
+    public Transform pTransform;
 
     private Fear playerFear;
 
@@ -59,6 +60,9 @@ public class Princess : MonoBehaviour
 
     public float sightRange = 5f;
 
+    public bool attracted = false;
+    public bool repelled = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,6 +94,12 @@ public class Princess : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(pTransform == null)
+        {
+            pTransform = hold;
+            attracted = false;
+            repelled = false;
+        }
         if (playerFear.fear < 25)
         {
             Disable();
@@ -102,8 +112,15 @@ public class Princess : MonoBehaviour
         {
             feet.Play();
         }
-
-        if (chasing)
+        if (attracted)
+        {
+            ChaseAttracted();
+        }
+        else if (repelled)
+        {
+            Disable();
+        }
+        else if (chasing)
         {
 
             if (!mouth.isPlaying && mouth.clip == crying)
@@ -201,6 +218,11 @@ public class Princess : MonoBehaviour
         {
             playerFear.invokeFear(3f);
         }
+    }
+
+    private void ChaseAttracted()
+    {
+        agent.SetDestination(pTransform.transform.position);
     }
 
     // Teleports behind the player

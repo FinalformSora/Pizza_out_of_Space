@@ -8,7 +8,8 @@ using UnityEngine.UIElements;
 
 public class sirenHeadAi : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    [SerializeField] Transform hold;
+    public Transform target;
     [SerializeField] Transform setLocation;
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
@@ -44,6 +45,9 @@ public class sirenHeadAi : MonoBehaviour
     //Generate Fear Components
     private Fear playerFear;
 
+    public bool attracted = false;
+    public bool repelled = false;
+
     void Start()
     {
         /*viewMesh = new Mesh();
@@ -56,10 +60,26 @@ public class sirenHeadAi : MonoBehaviour
 
     void Update()
     {
+        if(target == null)
+        {
+            target = hold;
+            attracted = false;
+            repelled = false;
+            isProvoked = false;
+        }
         DrawRayCastsFromVision();
         distanceToTarget = Vector3.Distance(target.position, transform.position);
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
-        if (isProvoked)
+        if (attracted)
+        {
+            ChaseTarget();
+        }
+        else if (repelled)
+        {
+            isProvoked = false;
+            WalkPath();
+        }
+        else if (isProvoked && (!attracted || !repelled))
         {
             if (!sirens.isPlaying)
             {
@@ -67,7 +87,7 @@ public class sirenHeadAi : MonoBehaviour
             }
             EngageTarget();
         }
-        else
+        else if(!attracted && !repelled)
         {
             if (distanceToTarget < chaseRange)
             {
@@ -78,6 +98,7 @@ public class sirenHeadAi : MonoBehaviour
                 WalkPath();
             }
         }
+
     }
 
     public void OnDamageTaken()

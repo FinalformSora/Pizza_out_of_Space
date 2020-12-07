@@ -5,15 +5,19 @@ using UnityEngine.AI;
 
 public class KlownAi : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    public Transform target;
+    [SerializeField] Transform hold;
     [SerializeField] float chaseRange = 5f;
     [SerializeField] float turnSpeed = 5f;
     [SerializeField] float captureRange = 2f;
 
     NavMeshAgent navMeshAgent;
 
-    float distanceToTarget = Mathf.Infinity;
+    public float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
+    public bool attracted = false;
+    public bool repelled = false;
+    float timer = 30f;
 
     void Start()
     {
@@ -22,8 +26,16 @@ public class KlownAi : MonoBehaviour
 
     void Update()
     {
+        if(target == null)
+        {
+            target = hold;
+            isProvoked = false;
+            attracted = false;
+            repelled = false;
+            navMeshAgent.isStopped = false;
+        }
         distanceToTarget = Vector3.Distance(target.position, transform.position);
-        if (isProvoked)
+        if (isProvoked && (!attracted || !repelled))
         {
             EngageTarget();
         }
@@ -31,11 +43,26 @@ public class KlownAi : MonoBehaviour
         {
             isProvoked = true;
         }
+        if (attracted)
+        {
+            EngageAttract();
+        }
+        if (repelled)
+        {
+            isProvoked = false;
+            navMeshAgent.isStopped = true;
+        }
     }
 
     public void OnDamageTaken()
     {
         isProvoked = true;
+    }
+
+    private void EngageAttract()
+    {
+        FaceTarget();
+        ChaseTarget();
     }
 
     private void EngageTarget()
