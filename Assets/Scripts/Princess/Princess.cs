@@ -59,6 +59,8 @@ public class Princess : MonoBehaviour
 
     public float sightRange = 5f;
 
+    public bool trapped = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,6 +96,11 @@ public class Princess : MonoBehaviour
         {
             Disable();
             return;
+        }
+
+        if (trapped)
+        {
+            agent.velocity = Vector3.zero;
         }
 
         moving = agent.velocity != Vector3.zero;

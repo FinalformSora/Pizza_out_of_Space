@@ -17,6 +17,8 @@ public class KlownAi : MonoBehaviour
     float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
 
+    public bool trapped = false;
+
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -24,6 +26,15 @@ public class KlownAi : MonoBehaviour
 
     void Update()
     {
+        if (trapped)
+        {
+            feet.Stop();
+            navMeshAgent.velocity = Vector3.zero;
+            GetComponent<Animator>().SetTrigger("idle");
+            isProvoked = false;
+            return;
+        }
+
         distanceToTarget = Vector3.Distance(target.position, transform.position);
         if (isProvoked)
         {
@@ -90,5 +101,15 @@ public class KlownAi : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, chaseRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, captureRange);
+    }
+
+    public void setTrapped()
+    {
+        trapped = true;
+    }
+
+    public void release()
+    {
+        trapped = false;
     }
 }

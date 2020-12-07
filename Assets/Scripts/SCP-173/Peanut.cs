@@ -20,6 +20,8 @@ public class Peanut : MonoBehaviour
     public AudioClip audioClip;
     private AudioSource audioSource;
 
+    public bool trapped = false;
+
     [SerializeField] float damage = 40f;
 
     // Start is called before the first frame update
@@ -38,10 +40,11 @@ public class Peanut : MonoBehaviour
     void Update()
     {
 
+
         Vector3 screenPoint = eyes.WorldToViewportPoint(target.position);
         seesPlayer = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
-        if (isBeingLookedAt)
+        if (isBeingLookedAt || trapped)
         {
             agent.velocity = Vector3.zero;
             agent.isStopped = true;
