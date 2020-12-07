@@ -11,6 +11,8 @@ public class KlownAi : MonoBehaviour
     [SerializeField] float captureRange = 2f;
 
     NavMeshAgent navMeshAgent;
+    public AudioSource feet;
+    public ZombieSounds zombieSounds;
 
     float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
@@ -30,6 +32,14 @@ public class KlownAi : MonoBehaviour
         else if (distanceToTarget <= chaseRange)
         {
             isProvoked = true;
+        }
+
+        if (navMeshAgent.velocity != Vector3.zero)
+        {
+            if (!feet.isPlaying)
+            {
+                feet.Play();
+            }
         }
     }
 
@@ -60,6 +70,7 @@ public class KlownAi : MonoBehaviour
 
     private void AttackTarget()
     {
+        zombieSounds.attackSound();
         gameObject.GetComponent<NavMeshAgent>().velocity = Vector3.zero;        
         GetComponent<Animator>().SetBool("attack", true);
         //Debug.Log(name + " has seeked and is destroying " + target.name);

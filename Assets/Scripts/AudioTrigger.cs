@@ -8,7 +8,9 @@ public class AudioTrigger : MonoBehaviour
     public AudioSource bottomFloorAudio;
     public AudioSource arcadeAudio;
     public PlayerController pc;
+    public GameObject zombies;
 
+    private ZombieSounds[] zombiesAudio;
     private bool playerOnBottomFloor = false;
 
     // Start is called before the first frame update
@@ -27,6 +29,7 @@ public class AudioTrigger : MonoBehaviour
         {
             Debug.Log("Entered bottom floor");
             playerOnBottomFloor = true;
+            
         }
         TriggerAudio();
     }
@@ -45,5 +48,15 @@ public class AudioTrigger : MonoBehaviour
         bottomFloorAudio.enabled = playerOnBottomFloor;
         topFloorAudio.enabled = !playerOnBottomFloor;
         arcadeAudio.enabled = !playerOnBottomFloor;
+        TriggerZombieAudio();
+    }
+
+    private void TriggerZombieAudio()
+    {
+        zombiesAudio = zombies.GetComponentsInChildren<ZombieSounds>();
+        for (int i = 0; i < zombiesAudio.Length; i++)
+        {
+            zombiesAudio[i].playerIsInBasement = playerOnBottomFloor;
+        }
     }
 }

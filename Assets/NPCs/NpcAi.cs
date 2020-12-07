@@ -60,7 +60,7 @@ public class NpcAi : MonoBehaviour
     {
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
         GetComponent<Animator>().SetBool("move", isMoving);
-        Debug.Log("Dist is " + distanceToLocation);
+        // Debug.Log("Dist is " + distanceToLocation);
         //enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
 
         switch (state)

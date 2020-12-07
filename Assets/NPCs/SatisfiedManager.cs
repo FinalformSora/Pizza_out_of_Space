@@ -25,7 +25,7 @@ public class SatisfiedManager : MonoBehaviour
         if (Physics.Raycast(ray.origin, ray.direction, out hit))
         {
             //print(hit.collider.gameObject.name + " got hit");
-            if (Input.GetKey(KeyCode.Mouse0) && hit.collider.gameObject.tag == "Unsatisfied" )
+            if (Input.GetKey(KeyCode.Mouse1) && hit.collider.gameObject.tag == "Unsatisfied" )
             {
                 hit.collider.gameObject.tag = "Satisfied";
                 //hit.collider.gameObject.SendMessage("ForceWalkAroundMood");
