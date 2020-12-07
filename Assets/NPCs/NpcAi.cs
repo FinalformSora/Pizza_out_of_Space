@@ -60,15 +60,17 @@ public class NpcAi : MonoBehaviour
     {
         distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
         GetComponent<Animator>().SetBool("move", isMoving);
-        Debug.Log("Dist is " + distanceToLocation);
+        //Debug.Log("Dist is " + distanceToLocation);
         //enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood };
 
         switch (state)
         {
             case MoodSates.arcadeMood:
-                //Debug.Log("Arcade");
+                Debug.Log("Arcade");
+                print(setLocation1);
                 navMeshAgent.SetDestination(setLocation.position);
                 SetIdleUponDestinationArcade(distanceToLocation);
+                minutes = 10;
                 break;
             case MoodSates.frontDesk:
                 //Debug.Log("Needs tikets");
@@ -94,6 +96,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case MoodSates.arcadeGameMood:
                 //print("Chose an arcade");
+                print(minutes);
                 PlayGameAnimation();
                 break;
             case MoodSates.walkAroundMood:
@@ -284,6 +287,8 @@ public class NpcAi : MonoBehaviour
     private void WalkAroundEstablishment()
     {
         isMoving = true;
+        navMeshAgent.isStopped = false;
+
         System.Random rnd = new System.Random();
         //print(distanceToLocation);
         if (walkDestinationAvailable)
@@ -300,7 +305,7 @@ public class NpcAi : MonoBehaviour
         //print("Final Destination " + distanceToLocation);
         if (HasReachedWalkedAroundLocation())
         {
-            //print("Walked to my location");
+            print("Walked to my location");
             reached = true;
         }
     }
@@ -312,12 +317,13 @@ public class NpcAi : MonoBehaviour
         navMeshAgent.SetDestination(currentArcade.position);
         distanceToArcade = Vector3.Distance(currentArcade.position, transform.position);
         //print("Arcade " + distanceToArcade);
-        if (distanceToArcade <= 3)
+        if (distanceToArcade <= 1.3)
         {
             navMeshAgent.isStopped = true;
             isMoving = false;
+            minutes -= Time.deltaTime;
             GetComponent<Animator>().SetBool("gameing", true);
-
+            print(arcadeIndex);
             if (arcadeIndex % 2 == 0)
             {
                 FaceTargetZpos();
@@ -326,14 +332,21 @@ public class NpcAi : MonoBehaviour
             {
                 FaceTargetZneg();
             }
-            
-            //StateChangeTimer();
+            minutes -= Time.deltaTime;
+            print(minutes);
+            if (minutes <= 0)
+            {
+                print("Work");
+                ForceWalkAroundMood();
+                arcadeMachines[arcadeIndex].tag = "Available";
+                minutes = 20;
+            }
         }
     }
 
     private void SetIdleUponDestinationArcade(float distanceToLocation)
     {
-        if (distanceToLocation <= 1)
+        if (distanceToLocation <= 2)
         {
             //GetComponent<Animator>().SetBool("idle", true);
             isMoving = false;
@@ -341,7 +354,7 @@ public class NpcAi : MonoBehaviour
             CheckAvailableArcade();
         }
     }
-
+   
     private void CheckAvailableArcade()
     {
         int num = 0;
@@ -360,6 +373,7 @@ public class NpcAi : MonoBehaviour
                 navMeshAgent.SetDestination(arcadeMachines[num].transform.position);
                 arcadeMachines[num].tag = "Unavailable";
                 state = MoodSates.arcadeGameMood;
+                arcadeIndex = num;
             }
             else
                 arcadeAvailable = true;
@@ -377,12 +391,16 @@ public class NpcAi : MonoBehaviour
 
     private void GettingState()
     {
+        print("Here agaon");
         System.Random rnd = new System.Random();
         int num = 0;
         num = rnd.Next(1, 6);
         reached = false;
         walkDestinationAvailable = true;
+        arcadeAvailable = true;
+
         num = forceCase;
+        print(num);
         switch (num)
         {
             case 1:
@@ -466,7 +484,9 @@ public class NpcAi : MonoBehaviour
         reached = false;
         GetComponent<Animator>().SetBool("sitting", false);
         GetComponent<Animator>().SetBool("needService", false);
-
+        GetComponent<Animator>().SetBool("gameing", false);
+        walkDestinationAvailable = true;
+        
         System.Random rnd = new System.Random();
         int num = 0;
         num = rnd.Next(1, 2);
