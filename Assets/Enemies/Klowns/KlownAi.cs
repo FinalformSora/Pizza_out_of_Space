@@ -17,7 +17,7 @@ public class KlownAi : MonoBehaviour
     bool isProvoked = false;
     public bool attracted = false;
     public bool repelled = false;
-    float timer = 30f;
+    public bool endGame = false;
 
     void Start()
     {
@@ -26,31 +26,39 @@ public class KlownAi : MonoBehaviour
 
     void Update()
     {
-        if(target == null)
+        if (endGame)
         {
-            target = hold;
-            isProvoked = false;
-            attracted = false;
-            repelled = false;
-            navMeshAgent.isStopped = false;
-        }
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
-        if (isProvoked && (!attracted || !repelled))
-        {
+            distanceToTarget = Vector3.Distance(hold.position, transform.position);
             EngageTarget();
         }
-        else if (distanceToTarget <= chaseRange)
+        else
         {
-            isProvoked = true;
-        }
-        if (attracted)
-        {
-            EngageAttract();
-        }
-        if (repelled)
-        {
-            isProvoked = false;
-            navMeshAgent.isStopped = true;
+            if (target == null)
+            {
+                target = hold;
+                isProvoked = false;
+                attracted = false;
+                repelled = false;
+                navMeshAgent.isStopped = false;
+            }
+            distanceToTarget = Vector3.Distance(target.position, transform.position);
+            if (isProvoked && (!attracted || !repelled))
+            {
+                EngageTarget();
+            }
+            else if (distanceToTarget <= chaseRange)
+            {
+                isProvoked = true;
+            }
+            if (attracted)
+            {
+                EngageAttract();
+            }
+            if (repelled)
+            {
+                isProvoked = false;
+                navMeshAgent.isStopped = true;
+            }
         }
     }
 

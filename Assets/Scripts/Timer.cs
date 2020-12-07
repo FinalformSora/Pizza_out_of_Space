@@ -13,13 +13,15 @@ public class Timer : MonoBehaviour
     [SerializeField] Text timer;
     [SerializeField] bool night = false;
     [SerializeField] GameObject solaire;
+    GameObject[] monsters;
 
     public LockDoors[] doors = new LockDoors[2];
     // Start is called before the first frame update
     void Start()
     {
-        time = 1070f;
+        time = 350f;
         sun = GameObject.Find("Sun");
+        monsters = GameObject.FindGameObjectsWithTag("Monster");
     }
 
     // Update is called once per frame
@@ -91,6 +93,30 @@ public class Timer : MonoBehaviour
 
     void loseGame()
     {
+        gameObject.GetComponent<Fear>().fear = 100;
+        foreach(GameObject x in monsters)
+        {
+            EndGame(x);
+        }
+    }
 
+    void EndGame(GameObject x)
+    {
+        if (x.GetComponent<Witch>())
+        {
+            x.GetComponent<Princess>().endGame = true;
+        }
+        if (x.GetComponent<SCP173>())
+        {
+            x.GetComponent<Peanut>().endGame = true;
+        }
+        if (x.GetComponent<Klown>())
+        {
+            x.GetComponent<KlownAi>().endGame = true;
+        }
+        if (x.GetComponent<Sirenhead>())
+        {
+            x.GetComponent<sirenHeadAi>().endGame = true;
+        }
     }
 }

@@ -62,6 +62,7 @@ public class Princess : MonoBehaviour
 
     public bool attracted = false;
     public bool repelled = false;
+    public bool endGame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -94,121 +95,192 @@ public class Princess : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(pTransform == null)
+        if (endGame)
         {
-            pTransform = hold;
-            attracted = false;
-            repelled = false;
-        }
-        if (playerFear.fear < 25)
-        {
-            Disable();
-            return;
-        }
-
-        moving = agent.velocity != Vector3.zero;
-        animator.SetBool("moving", moving);
-        if (moving && !feet.isPlaying)
-        {
-            feet.Play();
-        }
-        if (attracted)
-        {
-            ChaseAttracted();
-        }
-        else if (repelled)
-        {
-            Disable();
-        }
-        else if (chasing)
-        {
-
-            if (!mouth.isPlaying && mouth.clip == crying)
-                mouth.Play();
-
-            if (!whispers.isPlaying)
-                whispers.Play();
-
-            if (angry && angryTimer % 60 <= angryTime)
+            moving = true;
+            animator.SetBool("moving", moving);
+            if (moving && !feet.isPlaying)
             {
-                angryTimer += Time.deltaTime;
-            } else
+                feet.Play();
+            }
+            if (chasing)
             {
-                if (angry)
-                {
-                    calmDown();
-                }
+
+                if (!mouth.isPlaying && mouth.clip == crying)
+                    mouth.Play();
+
+                if (!whispers.isPlaying)
+                    whispers.Play();
+
+
                 // When she's done being angry
-                angry = false;
+                angry = true;
                 animator.SetBool("angry", angry);
-                angryTimer = 0;
                 mouth.clip = crying;
                 feet.clip = feetNormal;
+
+                EndChase();
+                agent.speed = angry ? defaultSpeed * angrySpeedMultiplier : defaultSpeed;
+                agent.acceleration = agent.speed * 10;
+                
+
+                if (attackLengthTimer % 60 >= attackTime)
+                {
+                    mouth.Stop();
+                    whispers.Stop();
+                    chasing = false;
+                    playerFear.StartFlicker();
+                    attackLengthTimer = 0;
+                }
+
+                attackLengthTimer += Time.deltaTime;
+            }
+            // Starts the attack
+            else
+            {
+                agent.transform.localScale = scale;
+                distanceMultiplier = 100 - playerFear.fear + 10;
+                chasing = true;
+                attackTimer = 0;
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(hold.position - (hold.forward * distanceMultiplier), out hit, 1000f, NavMesh.AllAreas))
+                {
+                    Stalk(hit.position);
+                }
             }
 
-            if (resting)
+            agent.isStopped = false;
+        }
+        else
+        {
+            if (pTransform == null)
             {
-                agent.speed = 0;
-                agent.velocity = Vector3.zero;
+                pTransform = hold;
+                attracted = false;
+                repelled = false;
+            }
+            if (playerFear.fear < 25)
+            {
+                Disable();
+                return;
+            }
+
+            moving = agent.velocity != Vector3.zero;
+            animator.SetBool("moving", moving);
+            if (moving && !feet.isPlaying)
+            {
+                feet.Play();
+            }
+            if (attracted)
+            {
+                ChaseAttracted();
+            }
+            else if (repelled)
+            {
+                Disable();
+            }
+            else if (chasing)
+            {
+
+                if (!mouth.isPlaying && mouth.clip == crying)
+                    mouth.Play();
+
+                if (!whispers.isPlaying)
+                    whispers.Play();
+
+                if (angry && angryTimer % 60 <= angryTime)
+                {
+                    angryTimer += Time.deltaTime;
+                }
+                else
+                {
+                    if (angry)
+                    {
+                        calmDown();
+                    }
+                    // When she's done being angry
+                    angry = false;
+                    animator.SetBool("angry", angry);
+                    angryTimer = 0;
+                    mouth.clip = crying;
+                    feet.clip = feetNormal;
+                }
+
+                if (resting)
+                {
+                    agent.speed = 0;
+                    agent.velocity = Vector3.zero;
+                    restTimer += Time.deltaTime;
+                    agent.isStopped = true;
+                    if (restTimer % 60 >= maxRestTime)
+                    {
+                        resting = false;
+                        animator.SetBool("resting", false);
+                        restTimer = 0;
+                        agent.isStopped = false;
+                    }
+                }
+                else
+                {
+                    Chase();
+                    agent.speed = angry ? defaultSpeed * angrySpeedMultiplier : defaultSpeed;
+                    agent.acceleration = agent.speed * 10;
+                }
+
+                if (attackLengthTimer % 60 >= attackTime)
+                {
+                    mouth.Stop();
+                    whispers.Stop();
+                    chasing = false;
+                    playerFear.StartFlicker();
+                    attackLengthTimer = 0;
+                }
+
+                attackLengthTimer += Time.deltaTime;
+            }
+            else if (resting)
+            {
+                chasing = false;
                 restTimer += Time.deltaTime;
                 agent.isStopped = true;
+
                 if (restTimer % 60 >= maxRestTime)
                 {
                     resting = false;
                     animator.SetBool("resting", false);
                     restTimer = 0;
-                    agent.isStopped = false;
+                    chasing = true;
                 }
-            } else
-            {
-                Chase();
-                agent.speed = angry ? defaultSpeed * angrySpeedMultiplier : defaultSpeed;
-                agent.acceleration = agent.speed * 10;
             }
-
-            if (attackLengthTimer % 60 >= attackTime)
+            // Starts the attack
+            else if (!chasing && attackTimer % 60 >= attackInterval)
             {
-                mouth.Stop();
-                whispers.Stop();
-                chasing = false;
-                playerFear.StartFlicker();
-                attackLengthTimer = 0;
-            }
-
-            attackLengthTimer += Time.deltaTime;
-        } else if (resting)
-        {
-            chasing = false;
-            restTimer += Time.deltaTime;
-            agent.isStopped = true;
-
-            if (restTimer % 60 >= maxRestTime)
-            {
-                resting = false;
-                animator.SetBool("resting", false);
-                restTimer = 0;
+                agent.transform.localScale = scale;
+                distanceMultiplier = 100 - playerFear.fear + 10;
                 chasing = true;
+                attackTimer = 0;
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(pTransform.position - (pTransform.forward * distanceMultiplier), out hit, 1000f, NavMesh.AllAreas))
+                {
+                    Stalk(hit.position);
+                }
             }
-        }
-        // Starts the attack
-        else if (!chasing && attackTimer % 60 >= attackInterval)
-        {
-            agent.transform.localScale = scale;
-            distanceMultiplier = 100 - playerFear.fear + 10;
-            chasing = true;
-            attackTimer = 0;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(pTransform.position - (pTransform.forward * distanceMultiplier), out hit, 1000f, NavMesh.AllAreas))
+            else
             {
-                Stalk(hit.position);
+                // Dissapear after attack time is over.
+                Disable();
             }
-        } else
-        {
-            // Dissapear after attack time is over.
-            Disable();
-        }
 
-        agent.isStopped = !chasing;
+            agent.isStopped = !chasing;
+        }
+    }
+    private void EndChase()
+    {
+        agent.SetDestination(hold.transform.position);
+        if (angry)
+        {
+            playerFear.invokeFear(3f);
+        }
     }
 
     private void Chase()
@@ -271,5 +343,4 @@ public class Princess : MonoBehaviour
         attackLengthTimer = 0;
         attackTimer += Time.deltaTime;
     }
-
 }
