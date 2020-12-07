@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
@@ -10,13 +11,17 @@ public class Timer : MonoBehaviour
     [SerializeField] int minute;
     [SerializeField] GameObject sun;
     [SerializeField] Text timer;
+    [SerializeField] bool night = false;
+    [SerializeField] GameObject solaire;
+    GameObject[] monsters;
 
     public LockDoors[] doors = new LockDoors[2];
     // Start is called before the first frame update
     void Start()
     {
-        time = 1080f;
+        time = 350f;
         sun = GameObject.Find("Sun");
+        monsters = GameObject.FindGameObjectsWithTag("Monster");
     }
 
     // Update is called once per frame
@@ -30,11 +35,17 @@ public class Timer : MonoBehaviour
         {
             sun.SetActive(true);
             lockDoors(doors, true);
+            if (night)
+            {
+                checkWinCondition();
+            }
         }
         else
         {
             sun.SetActive(false);
             lockDoors(doors, false);
+            night = true;
+            solaire.SetActive(true);
         }
         if(minute < 10)
         {
@@ -62,5 +73,50 @@ public class Timer : MonoBehaviour
         }
     }
 
+    void checkWinCondition()
+    {
+        int artifactsCollected = gameObject.GetComponent<FixMachine>().artifactCount;
+        if(artifactsCollected == 10)
+        {
+            winGame();
+        }
+        else
+        {
+            loseGame();
+        }
+    }
 
+    void winGame()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    void loseGame()
+    {
+        gameObject.GetComponent<Fear>().fear = 100;
+        foreach(GameObject x in monsters)
+        {
+            EndGame(x);
+        }
+    }
+
+    void EndGame(GameObject x)
+    {
+        if (x.GetComponent<Witch>())
+        {
+            x.GetComponent<Princess>().endGame = true;
+        }
+        if (x.GetComponent<SCP173>())
+        {
+            x.GetComponent<Peanut>().endGame = true;
+        }
+        if (x.GetComponent<Klown>())
+        {
+            x.GetComponent<KlownAi>().endGame = true;
+        }
+        if (x.GetComponent<Sirenhead>())
+        {
+            x.GetComponent<sirenHeadAi>().endGame = true;
+        }
+    }
 }

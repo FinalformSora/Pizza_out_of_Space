@@ -21,7 +21,7 @@ public class FixMachine : MonoBehaviour
 
     public AudioSource handsAudio;
 
-    private int artifactCount;
+    public int artifactCount;
 
     private PlayerController playerManager;
 

@@ -8,7 +8,8 @@ using UnityEngine.UIElements;
 
 public class sirenHeadAi : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    [SerializeField] Transform hold;
+    public Transform target;
     [SerializeField] Transform setLocation;
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
@@ -44,6 +45,10 @@ public class sirenHeadAi : MonoBehaviour
     //Generate Fear Components
     private Fear playerFear;
 
+    public bool attracted = false;
+    public bool repelled = false;
+    public bool endGame = false;
+
     void Start()
     {
         /*viewMesh = new Mesh();
@@ -56,26 +61,59 @@ public class sirenHeadAi : MonoBehaviour
 
     void Update()
     {
-        DrawRayCastsFromVision();
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
-        distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
-        if (isProvoked)
+        if (endGame)
         {
             if (!sirens.isPlaying)
             {
                 sirens.Play();
             }
-            EngageTarget();
+            ChaseTarget();
+            distanceToTarget = Vector3.Distance(hold.position, transform.position);
+            if (distanceToTarget <= captureRange)
+            {
+                FaceTarget();
+                AttackTarget();
+            }
         }
         else
         {
-            if (distanceToTarget < chaseRange)
+            if (target == null)
             {
-                playerFear.invokeFear();
+                target = hold;
+                attracted = false;
+                repelled = false;
+                isProvoked = false;
             }
-            else if (distanceToTarget > chaseRange)
+            DrawRayCastsFromVision();
+            distanceToTarget = Vector3.Distance(target.position, transform.position);
+            distanceToLocation = Vector3.Distance(setLocation.position, transform.position);
+            if (attracted)
             {
+                ChaseTarget();
+            }
+            else if (repelled)
+            {
+                isProvoked = false;
                 WalkPath();
+            }
+            else if (isProvoked && (!attracted || !repelled))
+            {
+                if (!sirens.isPlaying)
+                {
+                    sirens.Play();
+                }
+                EngageTarget();
+            }
+            else if (!attracted && !repelled)
+            {
+                if (distanceToTarget < chaseRange)
+                {
+                    playerFear.invokeFear();
+                }
+                else if (distanceToTarget > chaseRange)
+                {
+                    WalkPath();
+                }
             }
         }
     }

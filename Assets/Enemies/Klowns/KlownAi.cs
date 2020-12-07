@@ -5,15 +5,19 @@ using UnityEngine.AI;
 
 public class KlownAi : MonoBehaviour
 {
-    [SerializeField] Transform target;
+    public Transform target;
+    [SerializeField] Transform hold;
     [SerializeField] float chaseRange = 5f;
     [SerializeField] float turnSpeed = 5f;
     [SerializeField] float captureRange = 2f;
 
     NavMeshAgent navMeshAgent;
 
-    float distanceToTarget = Mathf.Infinity;
+    public float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
+    public bool attracted = false;
+    public bool repelled = false;
+    public bool endGame = false;
 
     void Start()
     {
@@ -22,20 +26,51 @@ public class KlownAi : MonoBehaviour
 
     void Update()
     {
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
-        if (isProvoked)
+        if (endGame)
         {
+            distanceToTarget = Vector3.Distance(hold.position, transform.position);
             EngageTarget();
         }
-        else if (distanceToTarget <= chaseRange)
+        else
         {
-            isProvoked = true;
+            if (target == null)
+            {
+                target = hold;
+                isProvoked = false;
+                attracted = false;
+                repelled = false;
+                navMeshAgent.isStopped = false;
+            }
+            distanceToTarget = Vector3.Distance(target.position, transform.position);
+            if (isProvoked && (!attracted || !repelled))
+            {
+                EngageTarget();
+            }
+            else if (distanceToTarget <= chaseRange)
+            {
+                isProvoked = true;
+            }
+            if (attracted)
+            {
+                EngageAttract();
+            }
+            if (repelled)
+            {
+                isProvoked = false;
+                navMeshAgent.isStopped = true;
+            }
         }
     }
 
     public void OnDamageTaken()
     {
         isProvoked = true;
+    }
+
+    private void EngageAttract()
+    {
+        FaceTarget();
+        ChaseTarget();
     }
 
     private void EngageTarget()

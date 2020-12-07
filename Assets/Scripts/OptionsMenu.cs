@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class OptionsMenu : MonoBehaviour
 {
     Resolution[] resolutions;
     public Dropdown resolutionDropDown;
+    public AudioMixer audioMixer;
 
     private void Start()
     {
+        /*
         resolutions = Screen.resolutions;
         resolutionDropDown.ClearOptions();
         List<string> options = new List<string>();
@@ -26,15 +29,22 @@ public class OptionsMenu : MonoBehaviour
         resolutionDropDown.AddOptions(options);
         resolutionDropDown.value = current;
         resolutionDropDown.RefreshShownValue();
+        */
     }
 
     public void SetVolume(float volume)
     {
-        Debug.Log(volume);
+        audioMixer.SetFloat("volume", volume);
     }
 
-    public void SetResolution(int resoolutionIndex)
-    { 
-        Screen.SetResolution(resolutions[resoolutionIndex].width, resolutions[resoolutionIndex].height, Screen.fullScreen);
+    public void SetResolution(int resolutionIndex)
+    {
+        Resolution resolution = resolutions[resolutionIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    public void SetFullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
     }
 }
