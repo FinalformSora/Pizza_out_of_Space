@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             int i = uiInventory.index % inventory.GetItemList().Count;
-            if (inventory.GetItemList()[i].amount > 0)
+            if (inventory.GetItemList()[i].amount > 0 && inventory.GetItemList()[i].itemType != Item.ItemType.Pizza)
             {
                 inventory.GetItemList()[i].amount--;
                 useItem(inventory.GetItemList()[i]);
