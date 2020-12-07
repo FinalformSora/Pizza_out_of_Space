@@ -35,6 +35,7 @@ public class NpcAi : MonoBehaviour
     bool reached = false;
 
     Transform currentArcade;
+    int arcadeIndex = 0;
 
     public MoodSates state;
     // Time components for walkTimer()
@@ -314,9 +315,18 @@ public class NpcAi : MonoBehaviour
         if (distanceToArcade <= 3)
         {
             navMeshAgent.isStopped = true;
-            GetComponent<Animator>().SetBool("gameing", true);
-            FaceTargetZpos();
             isMoving = false;
+            GetComponent<Animator>().SetBool("gameing", true);
+
+            if (arcadeIndex % 2 == 0)
+            {
+                FaceTargetZpos();
+            }
+            else
+            {
+                FaceTargetZneg();
+            }
+            
             //StateChangeTimer();
         }
     }
@@ -334,21 +344,25 @@ public class NpcAi : MonoBehaviour
 
     private void CheckAvailableArcade()
     {
-        int i = 0;
+        int num = 0;
         while (arcadeAvailable)
         {
-            print("Arcade " + arcadeMachines[i]);
-            if (arcadeMachines[i].tag == "Available")
+            System.Random rnd = new System.Random();
+            num = rnd.Next(1, arcadeMachines.Length);
+            print("Arcade " + arcadeMachines[num]);
+
+            if (arcadeMachines[num].tag == "Available")
             {
                 arcadeAvailable = false;
 
-                currentArcade = arcadeMachines[i].transform;
+                currentArcade = arcadeMachines[num].transform;
                 setLocation = currentArcade.transform;
-                navMeshAgent.SetDestination(arcadeMachines[i].transform.position);
-                arcadeMachines[i].tag = "Unavailable";
+                navMeshAgent.SetDestination(arcadeMachines[num].transform.position);
+                arcadeMachines[num].tag = "Unavailable";
                 state = MoodSates.arcadeGameMood;
             }
-            i++;
+            else
+                arcadeAvailable = true;
         }
     }
 
