@@ -27,7 +27,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        time = 361f;
+        time = 1190f;
         sun = GameObject.Find("Sun");
         monsters = GameObject.FindGameObjectsWithTag("Monster");
         spawn = new MonsterSpawnLocations();
@@ -148,18 +148,35 @@ public class Timer : MonoBehaviour
             switch (i)
             {
                 default: break;
-                case 1: break;
-                case 2: break;
-                case 3: break;
+                case 0: Instantiate(scp173, x, Quaternion.identity); break;
+                case 1: Instantiate(witch, x, Quaternion.identity); break;
+                case 2: Instantiate(klown, x, Quaternion.identity); break;
+            }
+            i++;
+            if(i > 2)
+            {
+                i = 0;
             }
         }
     }
 
     void SpawnUpperMonsters()
     {
+        int i = 0;
         foreach(Vector3 x in spawn.getUpper())
         {
-
+            switch (i)
+            {
+                default: break;
+                case 0: Instantiate(scp173, x, Quaternion.identity); break;
+                case 1: Instantiate(witch, x, Quaternion.identity); break;
+                case 2: Instantiate(klown, x, Quaternion.identity); break;
+            }
+            i++;
+            if (i > 2)
+            {
+                i = 0;
+            }
         }
     }
 }
