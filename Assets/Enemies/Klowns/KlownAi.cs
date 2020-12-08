@@ -22,6 +22,8 @@ public class KlownAi : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        hold = GameObject.FindGameObjectWithTag("Player").transform;
+        target = hold;
     }
 
     void Update()

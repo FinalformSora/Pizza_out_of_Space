@@ -32,6 +32,10 @@ public class Peanut : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hold = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        target = hold;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
         isBeingLookedAt = false;
         agent = GetComponent<NavMeshAgent>();
         layerMask = 1 << 8;

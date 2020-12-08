@@ -33,4 +33,14 @@ public class MonsterSpawnLocations
         lowerLocations.Add(new Vector3(13, 1, 90));
         lowerLocations.Add(new Vector3(94, 1, 60));
     }
+
+    public List<Vector3> getUpper()
+    {
+        return upperLocations;
+    }
+
+    public List<Vector3> getLower()
+    {
+        return lowerLocations;
+    }
 }

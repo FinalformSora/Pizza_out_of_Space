@@ -14,6 +14,18 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1509531407307024662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8396937938032410513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8798c69fdd9cdf409e795e8b9991e7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4466822390170028286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41,10 +53,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  hold: {fileID: 0}
   chaseRange: 15
   turnSpeed: 5
   captureRange: 2
   distanceToTarget: Infinity
+  attracted: 0
+  repelled: 0
+  endGame: 0
 --- !u!195 &8666758848587168453
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -67,18 +83,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1509531407307024662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8396937938032410513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8798c69fdd9cdf409e795e8b9991e7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8666758849429696172
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +195,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: WhiteClown
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc1b38a7c347cca45abe4b412bf1a582,
+        type: 3}
+      propertyPath: m_TagString
+      value: Monster
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: cc1b38a7c347cca45abe4b412bf1a582,
         type: 3}

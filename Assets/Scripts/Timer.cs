@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
+    [SerializeField] GameObject sirenHead;
+    [SerializeField] GameObject scp173;
+    [SerializeField] GameObject witch;
+    [SerializeField] GameObject klown;
+
     [SerializeField] float time;
     [SerializeField] int hour;
     [SerializeField] int minute;
@@ -14,14 +19,19 @@ public class Timer : MonoBehaviour
     [SerializeField] bool night = false;
     [SerializeField] GameObject solaire;
     GameObject[] monsters;
+    private MonsterSpawnLocations spawn;
+    private bool monsterSpawned = false;
+    private bool doorsUnlocked = false;
 
     public LockDoors[] doors = new LockDoors[2];
     // Start is called before the first frame update
     void Start()
     {
-        time = 361f;
+        time = 1190f;
         sun = GameObject.Find("Sun");
         monsters = GameObject.FindGameObjectsWithTag("Monster");
+        spawn = new MonsterSpawnLocations();
+        SpawnLowerMonsters();
     }
 
     // Update is called once per frame
@@ -42,10 +52,20 @@ public class Timer : MonoBehaviour
         }
         else
         {
+            if (!doorsUnlocked)
+            {
+                doorsUnlocked = true;
+
+            }
             sun.SetActive(false);
             lockDoors(doors, false);
             night = true;
             solaire.SetActive(true);
+            if(time > 1200 && !monsterSpawned)
+            {
+                monsterSpawned = true;
+                SpawnUpperMonsters();
+            }
         }
         if(minute < 10)
         {
@@ -117,6 +137,46 @@ public class Timer : MonoBehaviour
         if (x.GetComponent<Sirenhead>())
         {
             x.GetComponent<sirenHeadAi>().endGame = true;
+        }
+    }
+
+    void SpawnLowerMonsters()
+    {
+        int i = 0;
+        foreach(Vector3 x in spawn.getLower())
+        {
+            switch (i)
+            {
+                default: break;
+                case 0: Instantiate(scp173, x, Quaternion.identity); break;
+                case 1: Instantiate(witch, x, Quaternion.identity); break;
+                case 2: Instantiate(klown, x, Quaternion.identity); break;
+            }
+            i++;
+            if(i > 2)
+            {
+                i = 0;
+            }
+        }
+    }
+
+    void SpawnUpperMonsters()
+    {
+        int i = 0;
+        foreach(Vector3 x in spawn.getUpper())
+        {
+            switch (i)
+            {
+                default: break;
+                case 0: Instantiate(scp173, x, Quaternion.identity); break;
+                case 1: Instantiate(witch, x, Quaternion.identity); break;
+                case 2: Instantiate(klown, x, Quaternion.identity); break;
+            }
+            i++;
+            if (i > 2)
+            {
+                i = 0;
+            }
         }
     }
 }
