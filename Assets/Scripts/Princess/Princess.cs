@@ -71,6 +71,8 @@ public class Princess : MonoBehaviour
         chasing = false;
         attackLengthTimer = 0;
 
+        player = GameObject.FindGameObjectWithTag("Player");
+        hold = player.transform;
         pTransform = player.transform;
 
         playerFear = player.GetComponent<Fear>();

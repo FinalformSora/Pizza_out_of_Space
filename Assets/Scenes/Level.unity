@@ -20099,6 +20099,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3463173e3c1ba49a4b2ae2cf43bef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sirenHead: {fileID: 5918274361614183171, guid: 917a2baec0b011d40a7796ba13438801,
+    type: 3}
+  scp173: {fileID: 7489772414493788347, guid: 6d6ff509479966f40bd4b8d1ea26869e, type: 3}
+  witch: {fileID: 5948856478928418833, guid: 6f41b9d324f9430449de0cb8c8b9a8ab, type: 3}
+  klown: {fileID: 8666758849429696172, guid: 672219a7177218e4fac1dad762a73a95, type: 3}
   time: 0
   hour: 0
   minute: 0
@@ -27016,6 +27021,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sun: {fileID: 0}
   locked: 0
+--- !u!95 &555010850
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555010842}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 618f35d46ca0f77449e0ec939f3260f6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &555168320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118910,7 +118934,7 @@ PrefabInstance:
     - target: {fileID: 8666758849429696163, guid: 672219a7177218e4fac1dad762a73a95,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.16
+      value: -20.74
       objectReference: {fileID: 0}
     - target: {fileID: 8666758849429696163, guid: 672219a7177218e4fac1dad762a73a95,
         type: 3}
@@ -118920,7 +118944,7 @@ PrefabInstance:
     - target: {fileID: 8666758849429696163, guid: 672219a7177218e4fac1dad762a73a95,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -40.85
+      value: -13.74
       objectReference: {fileID: 0}
     - target: {fileID: 8666758849429696163, guid: 672219a7177218e4fac1dad762a73a95,
         type: 3}
@@ -118971,6 +118995,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666758849429696172, guid: 672219a7177218e4fac1dad762a73a95,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 672219a7177218e4fac1dad762a73a95, type: 3}
@@ -119606,6 +119635,11 @@ PrefabInstance:
       propertyPath: hold
       value: 
       objectReference: {fileID: 1731278269}
+    - target: {fileID: 6795928141074615464, guid: 6f41b9d324f9430449de0cb8c8b9a8ab,
+        type: 3}
+      propertyPath: endGame
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f41b9d324f9430449de0cb8c8b9a8ab, type: 3}
 --- !u!4 &6869168514144550833 stripped
@@ -119742,6 +119776,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Monster
+      objectReference: {fileID: 0}
+    - target: {fileID: 7489772414493788347, guid: 6d6ff509479966f40bd4b8d1ea26869e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7723793783004935660, guid: 6d6ff509479966f40bd4b8d1ea26869e,
         type: 3}
@@ -120185,6 +120224,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 5918274361614183171, guid: 917a2baec0b011d40a7796ba13438801,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5918274361647222916, guid: 917a2baec0b011d40a7796ba13438801,
         type: 3}

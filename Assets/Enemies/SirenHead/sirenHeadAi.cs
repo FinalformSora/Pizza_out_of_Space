@@ -54,6 +54,8 @@ public class sirenHeadAi : MonoBehaviour
         /*viewMesh = new Mesh();
         viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = viewMesh;*/
+        hold = GameObject.FindGameObjectWithTag("Player").transform;
+        target = hold;
         navMeshAgent = GetComponent<NavMeshAgent>();
         StartCoroutine("FindTaregtWithDelay", .3f);
         playerFear = target.GetComponent<Fear>();
