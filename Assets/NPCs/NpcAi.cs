@@ -9,15 +9,17 @@ public class NpcAi : MonoBehaviour
 {
     [SerializeField] int forceCase;
     [SerializeField] Transform setLocation;
-    [SerializeField] GameObject[] frontDeskLine;
     [SerializeField] Transform setLocation1;
     [SerializeField] Transform setLocation2;
     [SerializeField] Transform setLocation3;
     //[SerializeField] Transform setLocation4;
+    [SerializeField] GameObject[] frontDeskLine;
     [SerializeField] GameObject[] arcadeMachines;
     [SerializeField] GameObject[] walkAroundLocations;
     [SerializeField] GameObject[] availableTables;
     [SerializeField] GameObject[] steelTables;
+    [SerializeField] GameObject[] prizeLineMaker;
+
     [SerializeField] Transform pizza;
     [SerializeField] Transform pizzaSpaner;
 
@@ -97,7 +99,7 @@ public class NpcAi : MonoBehaviour
                 }
                 else
                 {
-                    HasReachedLocation();
+                    WaitForHelpPrizeDesk();
                 }
                 FaceTargetXneg();
                 break;
@@ -214,6 +216,32 @@ public class NpcAi : MonoBehaviour
                 setLocation = frontDeskLine[lineControllerIndex - 1].transform;
                 frontDeskLine[lineControllerIndex - 1].tag = "Unavailable";
                 frontDeskLine[lineControllerIndex].tag = "Available";
+                lineControllerIndex--;
+            }
+            else
+            {
+                isMoving = false;
+            }
+        }
+    }
+
+    private void WaitForHelpPrizeDesk()
+    {
+        GetComponent<Animator>().SetBool("idle", true);
+        if (gameObject.tag == "Satisfied")
+        {
+            ForceWalkAroundMood();
+            prizeLineMaker[lineControllerIndex].tag = "Available";
+            lineControllerIndex = 0;
+        }
+        else
+        {
+            if (prizeLineMaker[lineControllerIndex - 1].tag == "Available")
+            {
+                isMoving = true;
+                setLocation = prizeLineMaker[lineControllerIndex - 1].transform;
+                prizeLineMaker[lineControllerIndex - 1].tag = "Unavailable";
+                prizeLineMaker[lineControllerIndex].tag = "Available";
                 lineControllerIndex--;
             }
             else
@@ -443,7 +471,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case 3:
                 state = MoodSates.prizeDesk;
-                setLocation = setLocation3;
+                PrizeDeskLineMaker();
                 break;
             case 4:
                 //print("Walk Around");
@@ -548,35 +576,45 @@ public class NpcAi : MonoBehaviour
 
     private void FrontDeskLineMaker()
     {
-        /*    foreach(GameObject line in frontDeskLine)
+        int i = 0;
+        while (lineControllerIndex == 0)
+        {
+        //int i = availableTableIndex;
+            if (frontDeskLine[i].tag != "Unavailable")
             {
-                if(line.tag == "Available")
-                {
-                    setLocation = line.transform;
-                    lineController = line;
-    *//*                lineControllerIndex = frontDeskLine[i];
-    *//*                navMeshAgent.SetDestination(line.transform.position);
-                    line.tag = "Unavialable";
-                    break;
-                }*/
-            int i = 0;
-            while (lineControllerIndex == 0)
-            {
-            //int i = availableTableIndex;
-                if (frontDeskLine[i].tag != "Unavailable")
-                {
-                    setLocation = frontDeskLine[i].transform;
-                    lineControllerIndex = i;
-                    print(lineControllerIndex);
-                    frontDeskLine[i].tag = "Unavailable";
-                    lineController = availableTables[i];
-                }
-                else
-                {
-                    i++;
-                    lineControllerIndex = 0;
-                }
+                setLocation = frontDeskLine[i].transform;
+                lineControllerIndex = i;
+                print(lineControllerIndex);
+                frontDeskLine[i].tag = "Unavailable";
+                lineController = frontDeskLine[i];
             }
-        /*}*/   
+            else
+            {
+                i++;
+                lineControllerIndex = 0;
+            }
+        }
+    }
+
+    private void PrizeDeskLineMaker()
+    {
+        int i = 0;
+        while (lineControllerIndex == 0)
+        {
+            //int i = availableTableIndex;
+            if (prizeLineMaker[i].tag != "Unavailable")
+            {
+                setLocation = prizeLineMaker[i].transform;
+                lineControllerIndex = i;
+                print(lineControllerIndex);
+                prizeLineMaker[i].tag = "Unavailable";
+                lineController = prizeLineMaker[i];
+            }
+            else
+            {
+                i++;
+                lineControllerIndex = 0;
+            }
+        }
     }
 }
