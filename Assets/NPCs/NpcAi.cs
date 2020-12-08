@@ -30,7 +30,7 @@ public class NpcAi : MonoBehaviour
 
     float turnSpeed = 20;
 
-    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood, pizzaMood, sittingDown, waitingForService};
+    public enum MoodSates { arcadeMood, frontDesk, prizeDesk, arcadeGameMood, walkAroundMood, pizzaMood, sittingDown, waitingForService };
     bool arcadeAvailable = false;
     bool walkDestinationAvailable = true;
     bool isMoving = true;
@@ -72,8 +72,9 @@ public class NpcAi : MonoBehaviour
         switch (state)
         {
             case MoodSates.arcadeMood:
-/*                print(setLocation1);
-*/              navMeshAgent.SetDestination(setLocation.position);
+                /*                print(setLocation1);
+                */
+                navMeshAgent.SetDestination(setLocation.position);
                 SetIdleUponDestinationArcade(distanceToLocation);
                 minutes = 10;
                 break;
@@ -114,7 +115,7 @@ public class NpcAi : MonoBehaviour
             case MoodSates.pizzaMood:
                 if (!reached)
                 {
-                   if(goToWoodTable)
+                    if (goToWoodTable)
                     {
                         GetToTable();
                     }
@@ -123,7 +124,7 @@ public class NpcAi : MonoBehaviour
                         GetToSteelTable();
                     }
                 }
-                else if(reached)
+                else if (reached)
                 {
                     //navMeshAgent.isStopped = true;
                     GetComponent<Animator>().SetBool("sitting", true);
@@ -133,7 +134,7 @@ public class NpcAi : MonoBehaviour
                 break;
             case MoodSates.sittingDown:
                 {
-                    if((availableTableIndex%2)== 0)
+                    if ((availableTableIndex % 2) == 0)
                     {
                         FaceTargetZneg();
                         transform.position = transform.position + new Vector3(0, 0, .1f);
@@ -166,12 +167,12 @@ public class NpcAi : MonoBehaviour
                             Transform newPizza = PizzaDeleter.Instantiate(pizza, pizzaSpaner.position, spawnRotation);
                             newPizza.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
                             pizzaCounter = 1;
-                     
+
                         }
-                        if(pizzaCounter == 1)
+                        if (pizzaCounter == 1)
                         {
                             pizzaEatingTime -= Time.deltaTime;
-                            if(pizzaEatingTime <= 0)
+                            if (pizzaEatingTime <= 0)
                             {
                                 ForceWalkAroundMood();
                                 pizzaCounter = 0;
@@ -210,7 +211,7 @@ public class NpcAi : MonoBehaviour
         }
         else
         {
-            if(frontDeskLine[lineControllerIndex - 1].tag == "Available")
+            if (frontDeskLine[lineControllerIndex - 1].tag == "Available")
             {
                 isMoving = true;
                 setLocation = frontDeskLine[lineControllerIndex - 1].transform;
@@ -255,7 +256,7 @@ public class NpcAi : MonoBehaviour
     {
         System.Random rnd = new System.Random();
         int locationTheme = rnd.Next(1, 3);
-        if(locationTheme == 1)
+        if (locationTheme == 1)
         {
             print("Going wood");
             goToWoodTable = true;
@@ -265,7 +266,7 @@ public class NpcAi : MonoBehaviour
             goToWoodTable = false;
         }
     }
-   
+
     private void WaitingForService()
     {
         GetComponent<Animator>().SetBool("needService", true);
@@ -302,7 +303,7 @@ public class NpcAi : MonoBehaviour
         {
             int i = rnd.Next(1, availableTables.Length);
             //int i = availableTableIndex;
-            if(availableTables[i].tag != "Unavailable")
+            if (availableTables[i].tag != "Unavailable")
             {
                 setLocation = availableTables[i].transform;
                 availableTableIndex = i;
@@ -414,7 +415,7 @@ public class NpcAi : MonoBehaviour
             CheckAvailableArcade();
         }
     }
-   
+
     private void CheckAvailableArcade()
     {
         int num = 0;
@@ -458,7 +459,7 @@ public class NpcAi : MonoBehaviour
         walkDestinationAvailable = true;
         arcadeAvailable = true;
 
-        num = forceCase;
+        //num = forceCase;
         switch (num)
         {
             case 1:
@@ -499,7 +500,7 @@ public class NpcAi : MonoBehaviour
     private void FaceTargetZpos()
     {
         Vector3 direction = (setLocation.position - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z+10));
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z + 10));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed);
     }
     private void FaceTargetZneg()
@@ -544,10 +545,10 @@ public class NpcAi : MonoBehaviour
         GetComponent<Animator>().SetBool("needService", false);
         GetComponent<Animator>().SetBool("gameing", false);
         walkDestinationAvailable = true;
-        
+
         System.Random rnd = new System.Random();
         int num = 0;
-        num = rnd.Next(1, 2);
+        num = rnd.Next(1, 3);
 
         switch (num)
         {
@@ -567,7 +568,7 @@ public class NpcAi : MonoBehaviour
     {
         minutes -= Time.deltaTime;
         print(minutes);
-        if(minutes <= 0)
+        if (minutes <= 0)
         {
             GettingState();
             minutes = 20;
@@ -579,7 +580,7 @@ public class NpcAi : MonoBehaviour
         int i = 0;
         while (lineControllerIndex == 0)
         {
-        //int i = availableTableIndex;
+            //int i = availableTableIndex;
             if (frontDeskLine[i].tag != "Unavailable")
             {
                 setLocation = frontDeskLine[i].transform;
