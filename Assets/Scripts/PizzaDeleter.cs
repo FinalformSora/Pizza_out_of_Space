@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PizzaMaker : MonoBehaviour
+public class PizzaDeleter : MonoBehaviour
 {
 
     public int bounty = 20;
@@ -30,6 +30,5 @@ public class PizzaMaker : MonoBehaviour
     {
         // Do stuff here when pizza is finished
         Destroy(this.gameObject);
-
     }
 }
