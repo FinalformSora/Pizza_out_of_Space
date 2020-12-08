@@ -241,21 +241,21 @@ public class PlayerController : MonoBehaviour
 
     public void addAttract()
     {
-        if (money >= 10)
+        if (money >= 35)
         {
             Item item = new Item { itemType = Item.ItemType.Attract };
             inventory.AddItem(item);
-            modifyMoney(-10);
+            modifyMoney(-35);
         }
     }
 
     public void addRepel()
     {
-        if (money >= 10)
+        if (money >= 30)
         {
             Item item = new Item { itemType = Item.ItemType.Repel };
             inventory.AddItem(item);
-            modifyMoney(-10);
+            modifyMoney(-30);
         }
     }
     public void addTrap()
@@ -277,6 +277,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void addPills()
+    {
+        if(money >= 10)
+        {
+            Item item = new Item { itemType = Item.ItemType.Pills };
+            inventory.AddItem(item);
+            modifyMoney(-10);
+        }
+    }
+
     public void addPizza()
     {
         Item item = new Item { itemType = Item.ItemType.Pizza };
@@ -291,6 +301,7 @@ public class PlayerController : MonoBehaviour
             case Item.ItemType.Repel: useRepel();  break;
             case Item.ItemType.Trap: useTrap(); break;
             case Item.ItemType.Battery: useBattery();  break;
+            case Item.ItemType.Pills: usePills(); break;
         }
     }
 
@@ -315,5 +326,16 @@ public class PlayerController : MonoBehaviour
         if (batteryLife > 100.0f)
             batteryLife = 100.0f;
         batteryLifeBar.transform.localScale = new Vector3(batteryLife / 100f, 1, 1);
+    }
+
+    private void usePills()
+    {
+        Fear x = gameObject.GetComponent<Fear>();
+        x.fear -= 50;
+        if(x.fear < 0)
+        {
+            x.fear = 0;
+        }
+
     }
 }

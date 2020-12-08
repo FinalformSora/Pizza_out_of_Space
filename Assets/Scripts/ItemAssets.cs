@@ -17,4 +17,5 @@ public class ItemAssets : MonoBehaviour
     public Sprite BatterySprite;
     public Sprite TrapSprite;
     public Sprite PizzaSprite;
+    public Sprite PillsSprite;
 }

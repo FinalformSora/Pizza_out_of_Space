@@ -17,7 +17,7 @@ public class Spider : MonoBehaviour
 
     public float destroyDelay = 5f;
 
-    public int bounty = 10;
+    public int bounty = 20;
 
     private bool dead;
 
