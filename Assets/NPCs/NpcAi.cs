@@ -324,7 +324,7 @@ public class NpcAi : MonoBehaviour
         System.Random rnd = new System.Random();
         if (availableTableIndex == 0)
         {
-            int i = rnd.Next(1, availableTables.Length);
+            int i = rnd.Next(1, steelTables.Length);
             //int i = availableTableIndex;
             if (steelTables[i].tag != "Unavailable")
             {
