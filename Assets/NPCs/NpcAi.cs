@@ -458,7 +458,7 @@ public class NpcAi : MonoBehaviour
         walkDestinationAvailable = true;
         arcadeAvailable = true;
 
-        num = forceCase;
+        //num = forceCase;
         switch (num)
         {
             case 1:
