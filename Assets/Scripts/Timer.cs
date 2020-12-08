@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        time = 350f;
+        time = 361f;
         sun = GameObject.Find("Sun");
         monsters = GameObject.FindGameObjectsWithTag("Monster");
     }

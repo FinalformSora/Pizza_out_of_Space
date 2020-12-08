@@ -34,8 +34,13 @@ public class NpcAi : MonoBehaviour
     bool isMoving = true;
     bool reached = false;
 
+    //Components fr Arcade
     Transform currentArcade;
     int arcadeIndex = 0;
+
+    //Components for FontLine
+    GameObject lineController;
+    int lineControllerIndex;
 
     public MoodSates state;
     // Time components for walkTimer()
@@ -47,7 +52,6 @@ public class NpcAi : MonoBehaviour
     bool goToWoodTable = false;
     float pizzaCounter = 0;
     float pizzaEatingTime = 10;
-    //bool goToSteelTable = false;
 
     void Start()
     {
@@ -66,9 +70,8 @@ public class NpcAi : MonoBehaviour
         switch (state)
         {
             case MoodSates.arcadeMood:
-                Debug.Log("Arcade");
-                print(setLocation1);
-                navMeshAgent.SetDestination(setLocation.position);
+/*                print(setLocation1);
+*/              navMeshAgent.SetDestination(setLocation.position);
                 SetIdleUponDestinationArcade(distanceToLocation);
                 minutes = 10;
                 break;
@@ -78,6 +81,10 @@ public class NpcAi : MonoBehaviour
                 if (!reached)
                 {
                     SetIdleUponDestination(distanceToLocation);
+                }
+                else
+                {
+                    WaitForHelp();
                 }
                 FaceTargetXpos();
                 break;
@@ -96,7 +103,6 @@ public class NpcAi : MonoBehaviour
                 break;
             case MoodSates.arcadeGameMood:
                 //print("Chose an arcade");
-                print(minutes);
                 PlayGameAnimation();
                 break;
             case MoodSates.walkAroundMood:
@@ -189,6 +195,23 @@ public class NpcAi : MonoBehaviour
                 }
         }
 
+    }
+
+    private void WaitForHelp()
+    {
+        if(gameObject.tag == "Satisfied")
+        {
+            ForceWalkAroundMood();
+        }
+        else
+        {
+            if(frontDeskLine[lineControllerIndex - 1].tag == "Available")
+            {
+                setLocation = frontDeskLine[lineControllerIndex - 1].transform;
+                frontDeskLine[lineControllerIndex - 1].tag = "Unavailable";
+                frontDeskLine[lineControllerIndex].tag = "Available";
+            }
+        }
     }
 
     private void SelectALocation()
@@ -516,15 +539,35 @@ public class NpcAi : MonoBehaviour
 
     private void FrontDeskLineMaker()
     {
-        foreach(GameObject line in frontDeskLine)
-        {
-            if(line.tag == "Available")
+        /*    foreach(GameObject line in frontDeskLine)
             {
-                setLocation = line.transform;
-                navMeshAgent.SetDestination(line.transform.position);
-                line.tag = "Unavialable";
-                break;
+                if(line.tag == "Available")
+                {
+                    setLocation = line.transform;
+                    lineController = line;
+    *//*                lineControllerIndex = frontDeskLine[i];
+    *//*                navMeshAgent.SetDestination(line.transform.position);
+                    line.tag = "Unavialable";
+                    break;
+                }*/
+            int i = 0;
+            while (lineControllerIndex == 0)
+            {
+            //int i = availableTableIndex;
+                if (frontDeskLine[i].tag != "Unavailable")
+                {
+                    setLocation = frontDeskLine[i].transform;
+                    lineControllerIndex = i;
+                    print(lineControllerIndex);
+                    frontDeskLine[i].tag = "Unavailable";
+                    lineController = availableTables[i];
+                }
+                else
+                {
+                    i++;
+                    lineControllerIndex = 0;
+                }
             }
-        }   
+        /*}*/   
     }
 }
