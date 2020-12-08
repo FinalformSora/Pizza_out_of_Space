@@ -12,12 +12,15 @@ public class KlownAi : MonoBehaviour
     [SerializeField] float captureRange = 2f;
 
     NavMeshAgent navMeshAgent;
+    public AudioSource feet;
+    public ZombieSounds zombieSounds;
 
     public float distanceToTarget = Mathf.Infinity;
     bool isProvoked = false;
     public bool attracted = false;
     public bool repelled = false;
     public bool endGame = false;
+    public bool trapped = false;
 
     void Start()
     {
@@ -28,6 +31,16 @@ public class KlownAi : MonoBehaviour
 
     void Update()
     {
+
+        if (trapped)
+        {
+            feet.Stop();
+            navMeshAgent.velocity = Vector3.zero;
+            GetComponent<Animator>().SetTrigger("idle");
+            isProvoked = false;
+            return;
+        }
+
         if (endGame)
         {
             distanceToTarget = Vector3.Distance(hold.position, transform.position);
@@ -46,7 +59,10 @@ public class KlownAi : MonoBehaviour
             distanceToTarget = Vector3.Distance(target.position, transform.position);
             if (isProvoked && (!attracted || !repelled))
             {
-                EngageTarget();
+                if (!trapped)
+                {
+                    EngageTarget();
+                }
             }
             else if (distanceToTarget <= chaseRange)
             {
@@ -62,6 +78,23 @@ public class KlownAi : MonoBehaviour
                 navMeshAgent.isStopped = true;
             }
         }
+
+        if (navMeshAgent.velocity != Vector3.zero)
+        {
+            if (!feet.isPlaying)
+            {
+                feet.Play();
+            }
+        }
+    }
+
+    public void StopRightAway()
+    {
+        feet.Stop();
+        navMeshAgent.velocity = Vector3.zero;
+        GetComponent<Animator>().SetTrigger("idle");
+        navMeshAgent.isStopped = true;
+        navMeshAgent.ResetPath();
     }
 
     public void OnDamageTaken()
@@ -97,6 +130,7 @@ public class KlownAi : MonoBehaviour
 
     private void AttackTarget()
     {
+        zombieSounds.attackSound();
         gameObject.GetComponent<NavMeshAgent>().velocity = Vector3.zero;        
         GetComponent<Animator>().SetBool("attack", true);
         //Debug.Log(name + " has seeked and is destroying " + target.name);

@@ -11,6 +11,7 @@ public class Timer : MonoBehaviour
     [SerializeField] GameObject witch;
     [SerializeField] GameObject klown;
 
+    public float startTime = 361f;
     [SerializeField] float time;
     [SerializeField] int hour;
     [SerializeField] int minute;
@@ -23,11 +24,13 @@ public class Timer : MonoBehaviour
     private bool monsterSpawned = false;
     private bool doorsUnlocked = false;
 
+    public Transform zombies;
+
     public LockDoors[] doors = new LockDoors[2];
     // Start is called before the first frame update
     void Start()
     {
-        time = 1190f;
+        time = startTime;
         sun = GameObject.Find("Sun");
         monsters = GameObject.FindGameObjectsWithTag("Monster");
         spawn = new MonsterSpawnLocations();
@@ -150,7 +153,7 @@ public class Timer : MonoBehaviour
                 default: break;
                 case 0: Instantiate(scp173, x, Quaternion.identity); break;
                 case 1: Instantiate(witch, x, Quaternion.identity); break;
-                case 2: Instantiate(klown, x, Quaternion.identity); break;
+                case 2: GameObject klow = Instantiate(klown, x, Quaternion.identity); klow.transform.parent = zombies; break;
             }
             i++;
             if(i > 2)

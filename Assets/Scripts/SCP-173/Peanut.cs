@@ -25,6 +25,7 @@ public class Peanut : MonoBehaviour
     public bool attracted = false;
     public bool repelled = false;
     public bool endGame = false;
+    public bool trapped = false;
 
     [SerializeField] float damage = 40f;
     [SerializeField] Transform hold;
@@ -72,7 +73,7 @@ public class Peanut : MonoBehaviour
             Vector3 screenPoint = eyes.WorldToViewportPoint(target.position);
             seesPlayer = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
-            if (isBeingLookedAt)
+            if (isBeingLookedAt || trapped)
             {
                 agent.velocity = Vector3.zero;
                 agent.isStopped = true;
@@ -94,6 +95,8 @@ public class Peanut : MonoBehaviour
                     attackPlayer();
                 }
             }
+
+            isBeingLookedAt = false;
         }
     }
 

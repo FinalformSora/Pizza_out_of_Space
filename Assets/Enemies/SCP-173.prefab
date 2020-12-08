@@ -261,9 +261,15 @@ MonoBehaviour:
   target: {fileID: 0}
   player: {fileID: 0}
   sightRange: 1000
+  hitRadius: 2
   isBeingLookedAt: 0
   audioClip: {fileID: 8300000, guid: 40ec810adf286e145a31dd2a4ab04ceb, type: 3}
+  attracted: 0
+  repelled: 0
+  endGame: 0
+  trapped: 0
   damage: 40
+  hold: {fileID: 0}
 --- !u!195 &7723793783004935661
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -64,6 +64,8 @@ public class Princess : MonoBehaviour
     public bool repelled = false;
     public bool endGame = false;
 
+    public bool trapped = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -97,6 +99,12 @@ public class Princess : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (trapped)
+        {
+            agent.velocity = Vector3.zero;
+        }
+
         if (endGame)
         {
             moving = true;

@@ -7,8 +7,6 @@ public class SeeMonster : MonoBehaviour
 
     public Camera playerCam;
     public float sightRange = 50f;
-    public Peanut scp;
-    public Princess princess;
 
     private int layerMask;
 
@@ -30,14 +28,10 @@ public class SeeMonster : MonoBehaviour
         {
             if (hit.collider.GetComponent<Peanut>())
             {
-                scp.isBeingLookedAt = true;
+                hit.collider.GetComponent<Peanut>().isBeingLookedAt = true;
             } else if (hit.collider.GetComponent<Princess>())
             {
-                princess.getAngry();
-            }
-            else
-            {
-                scp.isBeingLookedAt = false;
+                hit.collider.GetComponent<Princess>().getAngry();
             }
         }
     }

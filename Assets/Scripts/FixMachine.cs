@@ -154,6 +154,27 @@ public class FixMachine : MonoBehaviour
                     Cursor.visible = true;
                 }
             }
+            else if (hit.collider.GetComponent<Glass>())
+            {
+                Glass glass = hit.collider.GetComponent<Glass>();
+                progressBarState = true;
+                progressBar.fillAmount = (glass.progress % 60) / glass.taskTime;
+                if (Input.GetKey(KeyCode.E))
+                {
+                    glass.pickupGlass();
+
+                    if (glass.progress % 60 >= glass.taskTime)
+                    {
+                        playerManager.modifyMoney(glass.bounty);
+                        glass.finishGlass();
+                    }
+
+                }
+                else
+                {
+                    glass.resetGlass();
+                }
+            }
         }
 
         interactText.gameObject.SetActive(interactTextState);
