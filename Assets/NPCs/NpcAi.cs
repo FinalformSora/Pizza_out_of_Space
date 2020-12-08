@@ -547,7 +547,7 @@ public class NpcAi : MonoBehaviour
         
         System.Random rnd = new System.Random();
         int num = 0;
-        num = rnd.Next(1, 2);
+        num = rnd.Next(1, 3);
 
         switch (num)
         {
