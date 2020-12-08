@@ -24,6 +24,7 @@ public class Repel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        monstersInRange = GameObject.FindGameObjectsWithTag("Monster");
         timer -= Time.deltaTime;
         if (timer < 0)
         {
