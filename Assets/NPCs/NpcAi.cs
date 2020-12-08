@@ -199,17 +199,26 @@ public class NpcAi : MonoBehaviour
 
     private void WaitForHelp()
     {
-        if(gameObject.tag == "Satisfied")
+        GetComponent<Animator>().SetBool("idle", true);
+        if (gameObject.tag == "Satisfied")
         {
             ForceWalkAroundMood();
+            frontDeskLine[lineControllerIndex].tag = "Available";
+            lineControllerIndex = 0;
         }
         else
         {
             if(frontDeskLine[lineControllerIndex - 1].tag == "Available")
             {
+                isMoving = true;
                 setLocation = frontDeskLine[lineControllerIndex - 1].transform;
                 frontDeskLine[lineControllerIndex - 1].tag = "Unavailable";
                 frontDeskLine[lineControllerIndex].tag = "Available";
+                lineControllerIndex--;
+            }
+            else
+            {
+                isMoving = false;
             }
         }
     }
